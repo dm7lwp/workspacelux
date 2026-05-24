@@ -1,0 +1,161 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import FaqBlock from '../components/FaqBlock.astro';
+import AdSlot from '../components/AdSlot.astro';
+import { tools } from '../data/tools';
+import { homeFaqs } from '../data/faqs';
+---
+
+<BaseLayout
+  title="Workspace Lux — Office Lighting Calculators for Better Workspaces"
+  description="Calculate lux, lumens, LED wattage, and color temperature for offices, desks, and workspaces. Free practical lighting calculators and guides."
+  path="/"
+>
+  <section class="max-w-site mx-auto px-4 sm:px-6 py-16 sm:py-20">
+    <div class="max-w-3xl">
+      <h1 class="text-4xl sm:text-5xl font-bold text-main mb-6 leading-tight">
+        Workspace Lighting Calculator
+      </h1>
+      <p class="text-lg sm:text-xl text-muted mb-8 leading-relaxed">
+        Calculate the right lux, lumens, wattage, and color temperature for offices, desks, studios,
+        and commercial workspaces.
+      </p>
+      <div class="flex flex-wrap gap-4">
+        <a href="/office-lighting-calculator" class="btn-primary">Use Office Lighting Calculator</a>
+        <a href="/lux-to-lumens-calculator" class="btn-secondary">Convert Lux to Lumens</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="max-w-site mx-auto px-4 sm:px-6 pb-16">
+    <h2 class="text-2xl font-semibold text-main mb-8">Featured Calculators</h2>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      {
+        tools.map((tool) => (
+          <a href={tool.href} class="card p-6 hover:border-primary/30 hover:shadow-md transition-all group">
+            <h3 class="font-semibold text-main group-hover:text-primary mb-2">{tool.title}</h3>
+            <p class="text-sm text-muted">{tool.description}</p>
+          </a>
+        ))
+      }
+    </div>
+  </section>
+
+  <AdSlot />
+
+  <section class="max-w-site mx-auto px-4 sm:px-6 py-12 prose-content">
+    <h2>How It Works</h2>
+    <p>
+      Workspace Lux helps you estimate practical lighting requirements without complex lighting design
+      software. Enter your room or desk dimensions, choose a workspace type, and get estimated lux,
+      lumens, and LED wattage in seconds. All calculations run in your browser — no account required.
+    </p>
+    <ol>
+      <li>Pick a calculator for your space (office, desk, or unit conversion).</li>
+      <li>Enter dimensions and select your task or workspace type.</li>
+      <li>Review lumens, wattage, color temperature, and fixture suggestions.</li>
+      <li>Use the result as a planning baseline before buying fixtures or talking to a contractor.</li>
+    </ol>
+
+    <h2>Workspace Lighting Basics</h2>
+
+    <h3>Why workspace lighting matters</h3>
+    <p>
+      Good lighting reduces eye strain, supports focus, and makes video calls look professional. Too
+      little light forces your eyes to work harder; too much causes glare on screens and paper.
+      Workspace Lux focuses on the numbers that matter for everyday planning: how bright your desk
+      should be, how many lumens a room needs, and what LED wattage to expect.
+    </p>
+
+    <h3>Lux vs lumens vs watts</h3>
+    <p>
+      <strong>Lux</strong> measures illuminance — how much light lands on a surface per square meter.
+      Lighting standards and comfort guidelines usually speak in lux. <strong>Lumens</strong> measure
+      total light output from a lamp or fixture. <strong>Watts</strong> measure electrical power; with
+      LEDs, the same lumens can be produced with far fewer watts than old incandescent bulbs. To plan
+      a room, start with a target lux, multiply by area to get lumens, then divide by LED efficiency
+      (lm/W) for wattage.
+    </p>
+
+    <h3>Recommended lux levels for workspaces</h3>
+    <p>
+      General office work typically targets 300–500 lux. Detailed tasks such as design review or
+      inspection may need 750–1000 lux. Meeting rooms and reception areas often use 300–400 lux for a
+      softer feel. Home office desks usually aim for 300–500 lux on the work surface, depending on
+      whether you mostly use a monitor or also read paper documents.
+    </p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Space</th>
+          <th>Typical lux</th>
+          <th>Notes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>General office</td>
+          <td>300–500</td>
+          <td>Computer and paperwork</td>
+        </tr>
+        <tr>
+          <td>Meeting room</td>
+          <td>300–500</td>
+          <td>Presentations and discussion</td>
+        </tr>
+        <tr>
+          <td>Design studio</td>
+          <td>750–1000</td>
+          <td>Detail and color work</td>
+        </tr>
+        <tr>
+          <td>Home office desk</td>
+          <td>300–500</td>
+          <td>Focus and video calls</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>Choosing the right color temperature</h3>
+    <p>
+      Color temperature is measured in kelvin (K). Warm white around 3000K feels cozy and works well
+      in home offices. Neutral 4000K is the corporate office standard — alert but not harsh. Cool
+      5000K suits design studios, labs, and video setups where color accuracy matters. Avoid mixing
+      very warm and very cool sources in the same field of view.
+    </p>
+
+    <h3>When to use each calculator</h3>
+    <ul>
+      <li>
+        <strong>Office Lighting Calculator</strong> — whole rooms: open offices, meeting rooms, home
+        offices.
+      </li>
+      <li>
+        <strong>Desk Lighting Calculator</strong> — task lighting for a single workstation or desk
+        lamp.
+      </li>
+      <li>
+        <strong>Lux to Lumens Calculator</strong> — quick conversion when you know target lux and
+        area.
+      </li>
+      <li>
+        <strong>Lumens to Watts Calculator</strong> — estimate LED power from total lumens.
+      </li>
+      <li>
+        <strong>Color Temperature Guide</strong> — pick warm, neutral, or cool white for your space
+        type.
+      </li>
+    </ul>
+
+    <p>
+      Workspace Lux provides practical lighting calculators and guides for offices, desks, studios,
+      and modern workspaces — without complex lighting design software. Results are simplified
+      estimates for planning; consult a qualified professional for code-compliant commercial design.
+    </p>
+  </section>
+
+  <section class="max-w-site mx-auto px-4 sm:px-6 pb-16">
+    <FaqBlock faqs={homeFaqs} />
+  </section>
+</BaseLayout>

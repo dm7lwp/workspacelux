@@ -1,0 +1,119 @@
+---
+import ToolLayout from '../layouts/ToolLayout.astro';
+import LumensToWattsCalculator from '../components/calculators/LumensToWattsCalculator';
+import FaqBlock from '../components/FaqBlock.astro';
+import RelatedTools from '../components/RelatedTools.astro';
+import AdSlot from '../components/AdSlot.astro';
+import Disclaimer from '../components/Disclaimer.astro';
+import { lumensToWattsFaqs } from '../data/faqs';
+import { ledEfficiencyPresets } from '../data/lightingPresets';
+
+const path = '/lumens-to-watts-calculator';
+---
+
+<ToolLayout
+  title="Lumens to Watts Calculator for LED Lighting"
+  description="Convert total lumens to estimated LED wattage using fixture efficiency. Plan office and workspace lighting power requirements before you buy fixtures."
+  path={path}
+  h1="Lumens to Watts Calculator"
+  subtitle="Estimate LED wattage from total lumens and fixture efficacy — useful for electrical planning and energy budgeting."
+  faqSchema={lumensToWattsFaqs}
+>
+  <section class="mb-10">
+    <h2 class="text-2xl font-semibold text-main mb-6">Calculator</h2>
+    <LumensToWattsCalculator client:load />
+  </section>
+
+  <AdSlot />
+
+  <section class="prose-content">
+    <h2>How this calculator works</h2>
+    <p>
+      LED lighting shifted how we think about brightness. With incandescent bulbs, people often used
+      watts as a proxy for brightness — a “60 W equivalent” label still appears on packaging. For
+      modern workspace design, watts measure electrical power consumption, not how much useful light
+      reaches your desk. <strong>Lumens</strong> describe output; <strong>watts</strong> describe
+      draw. The link between them is efficacy: lumens per watt (lm/W).
+    </p>
+    <p>
+      The formula is straightforward: <strong>watts = lumens ÷ lm/W</strong>. Ten thousand lumens at
+      100 lm/W equals about 100 watts of LED lighting. The same 10,000 lumens at 150 lm/W high-efficiency
+      fixtures needs only about 67 watts. Efficacy varies by chip quality, driver losses, thermal design,
+      and whether rated lumens are delivered at full power or after aging. Always check the manufacturer
+      datasheet for rated lumens and wattage at the same operating conditions.
+    </p>
+    <p>
+      This calculator is most useful after you know total lumens — from our
+      <a href="/lux-to-lumens-calculator">Lux to Lumens Calculator</a> or
+      <a href="/office-lighting-calculator">Office Lighting Calculator</a>. Enter that total and select
+      an efficiency preset: 80 lm/W for basic LED, 100 lm/W standard, 120 lm/W efficient, or 150 lm/W
+      premium. The result estimates aggregate fixture wattage, not necessarily one circuit breaker load
+      if fixtures are distributed across phases and zones.
+    </p>
+    <p>
+      Do not rely on “100 W incandescent = X LED watts” comparisons for office layouts. Incandescent
+      comparisons ignore lux targets, room size, and distribution. Plan from lux → lumens → watts in
+      that order. Dimming reduces power draw below rated wattage when lights are not at full output —
+      energy models for smart buildings should use actual dimming profiles, not nameplate maxima alone.
+    </p>
+    <p>
+      Drivers, controls, and emergency modules may add small standby or auxiliary loads not included in
+      light-engine wattage. For electrical panel sizing, consult an electrician with a fixture schedule.
+      Heat output from LED fixtures is lower than legacy sources but still matters in tight plenum
+      spaces — wattage correlates with heat dissipation at the luminaire.
+    </p>
+    <p>
+      Use results to compare quotes (“Vendor A needs 120 W total at 90 lm/W vs Vendor B at 110 lm/W for
+      the same lumen package”), estimate operating cost (watts × hours × energy rate), and sanity-check
+      whether a product’s claimed lumens and watts imply realistic efficacy (values above ~200 lm/W for
+      complete fixtures are uncommon; suspiciously low wattage for high lumen claims may indicate
+      overstated marketing).
+    </p>
+    <Disclaimer />
+
+    <h2>LED efficiency presets</h2>
+    <p>
+      These presets match common product tiers. Your actual project may mix efficacies if some areas use
+      decorative or specialty fixtures.
+    </p>
+    <table>
+      <thead>
+        <tr>
+          <th>Efficacy</th>
+          <th>Typical use</th>
+        </tr>
+      </thead>
+      <tbody>
+        {
+          ledEfficiencyPresets.map((preset) => (
+            <tr>
+              <td>{preset.label.split(' — ')[0]}</td>
+              <td>{preset.label.split(' — ')[1]}</td>
+            </tr>
+          ))
+        }
+      </tbody>
+    </table>
+
+    <h2>Example calculations</h2>
+    <p>
+      <strong>5,000 lumens at 100 lm/W:</strong> 5,000 ÷ 100 = 50 W — typical for a small home office
+      zone after lux × area planning.
+    </p>
+    <p>
+      <strong>10,000 lumens at 120 lm/W:</strong> 10,000 ÷ 120 ≈ 83 W — a common ballpark for a 20 m²
+      office at 500 lux with efficient panels.
+    </p>
+    <p>
+      <strong>25,000 lumens at 80 lm/W:</strong> 25,000 ÷ 80 ≈ 313 W — shows how poor efficacy increases
+      power and heat for the same brightness target.
+    </p>
+    <p>
+      Pair with the <a href="/color-temperature-guide">Color Temperature Guide</a> to choose LED CCT once
+      wattage and lumen budgets are set.
+    </p>
+  </section>
+
+  <FaqBlock faqs={lumensToWattsFaqs} />
+  <RelatedTools currentHref={path} />
+</ToolLayout>

@@ -1,0 +1,25 @@
+---
+import { getRelatedTools } from '../data/tools';
+
+interface Props {
+  currentHref: string;
+  title?: string;
+}
+
+const { currentHref, title = 'Related Tools' } = Astro.props;
+const related = getRelatedTools(currentHref);
+---
+
+<section class="mt-12" aria-labelledby="related-tools-heading">
+  <h2 id="related-tools-heading" class="text-2xl font-semibold text-main mb-6">{title}</h2>
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+    {
+      related.map((tool) => (
+        <a href={tool.href} class="card p-5 hover:border-primary/30 hover:shadow-md transition-all group">
+          <h3 class="font-medium text-main group-hover:text-primary mb-2">{tool.title}</h3>
+          <p class="text-sm text-muted">{tool.description}</p>
+        </a>
+      ))
+    }
+  </div>
+</section>

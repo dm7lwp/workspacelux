@@ -1,0 +1,132 @@
+---
+import ToolLayout from '../layouts/ToolLayout.astro';
+import OfficeLightingCalculator from '../components/calculators/OfficeLightingCalculator';
+import FaqBlock from '../components/FaqBlock.astro';
+import RelatedTools from '../components/RelatedTools.astro';
+import AdSlot from '../components/AdSlot.astro';
+import Disclaimer from '../components/Disclaimer.astro';
+import { officeFaqs } from '../data/faqs';
+import { recommendedLuxLevels } from '../data/lightingPresets';
+
+const path = '/office-lighting-calculator';
+---
+
+<ToolLayout
+  title="Office Lighting Calculator — Lux, Lumens & LED Wattage"
+  description="Calculate how many lumens and LED watts you need for an office, meeting room, open workspace, or home office based on room size and target lux level."
+  path={path}
+  h1="Office Lighting Calculator"
+  subtitle="Estimate lumens, LED wattage, color temperature, and fixture count for offices, meeting rooms, open workspaces, and home offices."
+  faqSchema={officeFaqs}
+>
+  <section class="mb-10">
+    <h2 class="text-2xl font-semibold text-main mb-6">Calculator</h2>
+    <OfficeLightingCalculator client:load />
+  </section>
+
+  <AdSlot />
+
+  <section class="prose-content">
+    <h2>How this calculator works</h2>
+    <p>
+      Office lighting planning starts with a target illuminance level measured in lux — how much light
+      reaches your work surfaces. Unlike lumens, which describe total light output from fixtures, lux
+      tells you whether a desk or floor area is bright enough for the tasks people perform there.
+      Building codes, workplace guidelines, and ergonomic recommendations usually express targets in
+      lux, which is why this calculator begins with your room dimensions and a lux goal rather than
+      fixture wattage alone.
+    </p>
+    <p>
+      The first step is room area. Enter length and width in meters or feet. If you use feet, the
+      calculator converts square footage to square meters before applying the lux formula. Total
+      lumens required equals target lux multiplied by area in square meters: lumens = lux × m². For
+      example, a 20 m² office at 500 lux needs 10,000 lumens of effective output on the work plane.
+      That relationship is linear — double the area or double the lux target and you double the
+      lumens required.
+    </p>
+    <p>
+      LED wattage is derived from lumens per watt (lm/W), also called efficacy. Divide total lumens by
+      your chosen efficiency to estimate electrical load: watts = lumens ÷ lm/W. A 10,000 lumen target
+      at 100 lm/W suggests about 100 watts of LED lighting across the space. Consumer fixtures often
+      range from 80–150 lm/W; the calculator defaults to 100 lm/W as a practical middle ground. Because
+      real installations lose light to walls, corners, and mounting height, the result panel may show a
+      wattage range rather than a single precise number.
+    </p>
+    <p>
+      Workspace type presets adjust the default lux target and suggest color temperature and CRI
+      (Color Rendering Index) suited to that environment. General and open offices typically target
+      500 lux at 4000K neutral white. Meeting rooms may use 300 lux with slightly warmer 3500K–4000K
+      light for comfort. Design studios often need 750 lux or more with higher CRI for color-critical
+      work. These presets are starting points — you can override the lux slider to match your own
+      standard or client brief.
+    </p>
+    <p>
+      Optional fields such as ceiling height and light loss factor are included for context. Higher
+      ceilings spread the same lumen output over a larger volume, which can reduce illuminance on the
+      desk unless fixtures are chosen and aimed carefully. Light loss accounts for dirt, aging lamps,
+      and imperfect reflectance in real rooms. The simplified formula does not model photometric
+      distribution; it answers the planning question “how much total output do I need?” before you
+      select specific products or layouts.
+    </p>
+    <p>
+      Fixture count suggestions divide total lumens by typical panel or linear fixture outputs (roughly
+      3,000–4,000 lm each). That yields a ballpark such as “about 4–5 LED panels” for a medium office.
+      Actual layout depends on ceiling grid, beam angle, and whether you use direct-only or direct/indirect
+      luminaires. Use the calculator output when comparing product specifications, preparing a shopping
+      list, or discussing requirements with an electrician or lighting designer.
+    </p>
+    <Disclaimer />
+
+    <h2>Recommended lux levels</h2>
+    <p>
+      The table below summarizes typical illuminance ranges for common workspace types. Values reflect
+      widely cited guidance for general planning — local codes, LEED projects, or client standards may
+      differ. When in doubt, 500 lux is a safe default for routine office tasks; lower levels suit
+      circulation and social spaces, while detail work may need 750 lux or more.
+    </p>
+    <table>
+      <thead>
+        <tr>
+          <th>Space</th>
+          <th>Typical lux</th>
+          <th>Notes</th>
+        </tr>
+      </thead>
+      <tbody>
+        {
+          recommendedLuxLevels.map((row) => (
+            <tr>
+              <td>{row.space}</td>
+              <td>{row.lux}</td>
+              <td>{row.notes}</td>
+            </tr>
+          ))
+        }
+      </tbody>
+    </table>
+
+    <h2>Example calculations</h2>
+    <p>
+      <strong>Small home office (3 m × 4 m at 500 lux):</strong> Area is 12 m². Required lumens =
+      500 × 12 = 6,000 lm. At 100 lm/W, estimated LED load is about 60 W before layout losses. A pair
+      of 3,000 lm ceiling fixtures or one panel plus a desk lamp may suffice depending on layout.
+    </p>
+    <p>
+      <strong>Open plan zone (8 m × 10 m at 500 lux):</strong> Area is 80 m². Required lumens =
+      40,000 lm. At 120 lm/W efficient LED, nominal wattage is about 333 W — often delivered by multiple
+      linear runs or panel grids rather than one source.
+    </p>
+    <p>
+      <strong>Design studio (5 m × 6 m at 750 lux):</strong> Area is 30 m². Required lumens = 22,500
+      lm. Higher CRI (90+) and 4000K–5000K color temperature help color review. Expect more fixtures or
+      higher-output luminaires than a general office of the same size.
+    </p>
+    <p>
+      For quick lux-to-lumen checks without room dimensions, use our <a href="/lux-to-lumens-calculator">Lux to Lumens Calculator</a>.
+      To translate total lumens into power draw, follow with the <a href="/lumens-to-watts-calculator">Lumens to Watts Calculator</a>.
+    </p>
+  </section>
+
+  <FaqBlock faqs={officeFaqs} />
+  <RelatedTools currentHref={path} />
+</ToolLayout>

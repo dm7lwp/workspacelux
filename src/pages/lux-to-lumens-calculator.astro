@@ -1,0 +1,122 @@
+---
+import ToolLayout from '../layouts/ToolLayout.astro';
+import LuxToLumensCalculator from '../components/calculators/LuxToLumensCalculator';
+import FaqBlock from '../components/FaqBlock.astro';
+import RelatedTools from '../components/RelatedTools.astro';
+import AdSlot from '../components/AdSlot.astro';
+import Disclaimer from '../components/Disclaimer.astro';
+import { luxToLumensFaqs } from '../data/faqs';
+
+const path = '/lux-to-lumens-calculator';
+---
+
+<ToolLayout
+  title="Lux to Lumens Calculator — Convert Lux to Lumens by Area"
+  description="Convert lux to lumens using room area. Use this simple calculator to estimate total lumens for offices, desks, studios, and workspaces."
+  path={path}
+  h1="Lux to Lumens Calculator"
+  subtitle="Convert target lux and floor area into total lumens — the essential step between lighting standards and fixture shopping."
+  faqSchema={luxToLumensFaqs}
+>
+  <section class="mb-10">
+    <h2 class="text-2xl font-semibold text-main mb-6">Calculator</h2>
+    <LuxToLumensCalculator client:load />
+  </section>
+
+  <AdSlot />
+
+  <section class="prose-content">
+    <h2>How this calculator works</h2>
+    <p>
+      Lux and lumens measure different things, and confusing them is one of the most common mistakes in
+      lighting planning. <strong>Lux</strong> (lx) is illuminance: lumens per square meter falling on a
+      surface. It answers “how bright is my desk or floor?” <strong>Lumens</strong> (lm) describe total
+      light output from a source or group of fixtures. A 10,000 lumen panel might produce 500 lux on a
+      desk directly below it and much less in a distant corner — same lumens, different lux depending on
+      distance and distribution.
+    </p>
+    <p>
+      To convert lux to lumens for planning purposes, you need the area over which you want to achieve
+      that illuminance. The formula is: <strong>lumens = lux × area (m²)</strong>. If your area is in
+      square feet, convert first: m² = ft² × 0.092903. Then multiply by lux. Five hundred lux over 20
+      m² requires 10,000 lumens of effective output on the work plane — not necessarily 10,000 lumens
+      printed on a single box, because not every lumen from a fixture reaches the target surface.
+    </p>
+    <p>
+      Why do standards use lux? Workplace and educational guidelines specify minimum illuminance on task
+      surfaces — lux — because that is what affects visual comfort and performance. Lumens describe what
+      you buy on a spec sheet. The conversion bridges “my office should be 500 lux” to “I need roughly
+      X lumens of installed output for this floor area,” before you account for layout efficiency.
+    </p>
+    <p>
+      This calculator assumes uniform illuminance across the entered area. Real rooms are not uniform:
+      corners are darker, windows add daylight, and ceiling height changes how light spreads. Open offices
+      with indirect lighting may need more total lumens than the bare formula suggests to hit minimum lux
+      at every desk. Treat the result as a baseline for budgeting and product comparison, then add
+      margin for losses or use our <a href="/office-lighting-calculator">Office Lighting Calculator</a>
+      for workspace-specific presets.
+    </p>
+    <p>
+      Common search questions map directly to this math. “How many lumens is 500 lux?” always requires
+      area: 500 lux over 10 m² = 5,000 lm; over 50 m² = 25,000 lm. “300 lux vs 500 lux” is a 67%
+      increase in required lumens for the same room. Once you have total lumens, divide by LED efficacy
+      (lm/W) in the <a href="/lumens-to-watts-calculator">Lumens to Watts Calculator</a> to estimate
+      power draw.
+    </p>
+    <p>
+      Daylight contributes lux without adding fixture lumens. In daylit spaces you may need less electric
+      lighting to meet combined targets — but for worst-case evening planning, calculate on electric
+      load alone. For desk-sized areas, use smaller dimensions or the
+      <a href="/desk-lighting-calculator">Desk Lighting Calculator</a> for task-specific guidance.
+    </p>
+    <Disclaimer />
+
+    <h2>Common conversion examples</h2>
+    <p>
+      The table shows total lumens required for three room sizes at 300, 500, and 750 lux. Values assume
+      uniform coverage — add headroom for real-world layouts.
+    </p>
+    <table>
+      <thead>
+        <tr>
+          <th>Area</th>
+          <th>300 lux</th>
+          <th>500 lux</th>
+          <th>750 lux</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>10 m²</td>
+          <td>3,000 lm</td>
+          <td>5,000 lm</td>
+          <td>7,500 lm</td>
+        </tr>
+        <tr>
+          <td>20 m²</td>
+          <td>6,000 lm</td>
+          <td>10,000 lm</td>
+          <td>15,000 lm</td>
+        </tr>
+        <tr>
+          <td>50 m²</td>
+          <td>15,000 lm</td>
+          <td>25,000 lm</td>
+          <td>37,500 lm</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>When to use lux vs lumens</h2>
+    <p>
+      Use <strong>lux</strong> when setting or checking brightness on a surface — compliance, ergonomics,
+      photography exposure on a desk, or comparing “is this room bright enough?” Use <strong>lumens</strong>
+      when selecting products — LED panels, tubes, and bulbs are sold by lumen output and efficacy. The
+      conversion connects the two, but photometric design (spacing, mounting height, beam angle) still
+      determines whether installed lumens actually deliver your target lux everywhere you need it.
+    </p>
+  </section>
+
+  <FaqBlock faqs={luxToLumensFaqs} />
+  <RelatedTools currentHref={path} />
+</ToolLayout>

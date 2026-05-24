@@ -1,0 +1,24 @@
+---
+interface Props {
+  slot?: 'inline' | 'sidebar';
+  label?: string;
+}
+
+const { slot = 'inline', label = 'Advertisement' } = Astro.props;
+const showPlaceholder = import.meta.env.PUBLIC_ADSENSE_CLIENT_ID !== 'enabled';
+---
+
+{
+  showPlaceholder ? null : (
+    <aside
+      class:list={[
+        'rounded-card border border-dashed border-border bg-slate-50/50',
+        slot === 'sidebar' ? 'p-4 min-h-[250px]' : 'p-6 my-8 min-h-[90px]',
+      ]}
+      aria-label={label}
+      data-ad-slot={slot}
+    >
+      <!-- AdSense placeholder: set PUBLIC_ADSENSE_CLIENT_ID when approved -->
+    </aside>
+  )
+}

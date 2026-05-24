@@ -1,0 +1,132 @@
+---
+import ToolLayout from '../layouts/ToolLayout.astro';
+import DeskLightingCalculator from '../components/calculators/DeskLightingCalculator';
+import FaqBlock from '../components/FaqBlock.astro';
+import RelatedTools from '../components/RelatedTools.astro';
+import AdSlot from '../components/AdSlot.astro';
+import Disclaimer from '../components/Disclaimer.astro';
+import { deskFaqs } from '../data/faqs';
+import { taskTypes } from '../data/lightingPresets';
+
+const path = '/desk-lighting-calculator';
+---
+
+<ToolLayout
+  title="Desk Lighting Calculator — Lumens & Lux for Desk Work"
+  description="Find the right brightness, lumens, and color temperature for your desk, home office, or workstation. Plan task lighting for computer work, reading, design, and video calls."
+  path={path}
+  h1="Desk Lighting Calculator"
+  subtitle="Estimate lux targets, lamp lumens, color temperature, and fixture types for desk and workstation task lighting."
+  faqSchema={deskFaqs}
+>
+  <section class="mb-10">
+    <h2 class="text-2xl font-semibold text-main mb-6">Calculator</h2>
+    <DeskLightingCalculator client:load />
+  </section>
+
+  <AdSlot />
+
+  <section class="prose-content">
+    <h2>How this calculator works</h2>
+    <p>
+      Desk lighting is task lighting: it supplements ambient room light so your immediate work surface
+      reaches a comfortable illuminance without glare on your monitor or harsh shadows on paper. This
+      calculator focuses on the desk footprint — width and depth in centimeters or inches — and the type
+      of work you perform. Each task type maps to a recommended lux range based on common ergonomic and
+      workplace guidance. Computer work typically targets 300–500 lux on the keyboard and documents area;
+      reading and writing often aim for around 500 lux; drawing, design, and crafting may need 750 lux
+      or more.
+    </p>
+    <p>
+      The core formula mirrors room lighting: lumens on the work surface ≈ lux × desk area in square
+      meters. A 120 cm × 60 cm desk has an area of 0.72 m². At 400 lux (mid-range for computer work),
+      the surface needs about 288 lumens of illuminance distributed across that plane. In practice, a
+      desk lamp or monitor light bar does not deliver all its lumens onto the desk — some spill to walls
+      and ceiling. The calculator applies a simplified multiplier so suggested lamp output is higher
+      than the bare lux × area result, giving a practical range for product selection.
+    </p>
+    <p>
+      Existing ambient light matters. If your room already provides 200 lux from ceiling fixtures, you
+      need less additional task light to reach 500 lux on the desk than you would in a dim room. The
+      optional ambient level field helps you think about balance: task plus ambient should meet the
+      target without over-lighting the screen. For video calls, moderate frontal fill (300–500 lux
+      equivalent on your face) often works better than a single harsh overhead source that creates eye
+      shadows.
+    </p>
+    <p>
+      Color temperature recommendations vary by task. Neutral 4000K suits most office-style desk work
+      and video. Reading at home may feel better at 3500K–4000K. Design and color work often benefit
+      from 4000K–5000K with high CRI. The calculator suggests a range and lamp type — monitor light bar,
+      dimmable desk lamp, adjustable task arm — aligned with each task preset. These are planning hints,
+      not product endorsements.
+    </p>
+    <p>
+      Glare control is as important as brightness. Position task lights to the side of your screen,
+      use diffusers, and prefer dimmable fixtures so you can match screen luminance to paper and
+      keyboard. A monitor light bar reduces contrast between a bright display and a dark desk area but
+      may not replace ambient light for paper tasks. Gaming setups sometimes deliberately use lower
+      illuminance (200–400 lux) with bias lighting to reduce eye fatigue during long sessions — the
+      preset reflects that use case.
+    </p>
+    <p>
+      Results are simplified estimates. Real desk illuminance depends on lamp height, beam angle, shade
+      geometry, and room reflectance. Use the output to compare desk lamps (e.g., 800–1200 lm
+      dimmable LED) or to verify that your current setup is in the right ballpark before upgrading
+      equipment.
+    </p>
+    <Disclaimer />
+
+    <h2>Recommended lux levels by task</h2>
+    <p>
+      The following ranges match the task presets in the calculator. Adjust within the range based on
+      age, contrast needs, and how much ambient light you already have.
+    </p>
+    <table>
+      <thead>
+        <tr>
+          <th>Task</th>
+          <th>Lux range</th>
+          <th>Suggested lamp type</th>
+        </tr>
+      </thead>
+      <tbody>
+        {
+          taskTypes.map((task) => (
+            <tr>
+              <td>{task.label}</td>
+              <td>
+                {task.luxMin === task.luxMax
+                  ? `${task.luxMin} lux`
+                  : `${task.luxMin}–${task.luxMax} lux`}
+              </td>
+              <td>{task.lampType}</td>
+            </tr>
+          ))
+        }
+      </tbody>
+    </table>
+
+    <h2>Example calculations</h2>
+    <p>
+      <strong>Computer desk 120 cm × 60 cm:</strong> Area 0.72 m². Target 300–500 lux → roughly
+      216–360 lm on the surface; a dimmable lamp or monitor bar rated around 800–1200 lm is often
+      practical after accounting for spill and dimming headroom.
+    </p>
+    <p>
+      <strong>Drawing desk 150 cm × 75 cm at 750 lux:</strong> Area 1.125 m² → about 844 lm on the
+      plane before multiplier. Choose a high-CRI adjustable arm lamp with wide, even beam coverage.
+    </p>
+    <p>
+      <strong>Video call setup:</strong> Aim for soft 4000K–5000K fill at roughly 300–500 lux on your
+      face; avoid strong backlight from windows without frontal light. Pair with moderate room ambient
+      so the camera sees balanced exposure.
+    </p>
+    <p>
+      Planning whole-room lighting? Use the <a href="/office-lighting-calculator">Office Lighting Calculator</a>
+      for ceiling fixtures, then return here to size desk task light.
+    </p>
+  </section>
+
+  <FaqBlock faqs={deskFaqs} />
+  <RelatedTools currentHref={path} />
+</ToolLayout>

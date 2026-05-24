@@ -1,0 +1,141 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import RelatedTools from '../components/RelatedTools.astro';
+import AdSlot from '../components/AdSlot.astro';
+import { recommendedLuxLevels, colorTempScale } from '../data/lightingPresets';
+
+const path = '/office-lighting-standards';
+---
+
+<BaseLayout
+  title="Office Lighting Standards — Recommended Lux, CRI & Color Temperature"
+  description="Learn recommended lux levels, color temperature, and CRI for offices, meeting rooms, open workspaces, and home offices based on common workplace guidelines."
+  path={path}
+>
+  <article class="max-w-site mx-auto px-4 sm:px-6 py-10">
+    <header class="mb-10">
+      <h1 class="text-3xl sm:text-4xl font-bold text-main mb-4">Office Lighting Standards</h1>
+      <p class="text-lg text-muted max-w-3xl">
+        A practical overview of illuminance (lux), color temperature, and color rendering targets for
+        modern workspaces — for planning and conversation, not code compliance.
+      </p>
+    </header>
+
+    <section class="prose-content">
+      <h2>Why standards matter for workspace lighting</h2>
+      <p>
+        Office lighting standards exist to balance visual comfort, task performance, and energy use.
+        Organizations such as IES (Illuminating Engineering Society), CIBSE, and national building codes
+        publish illuminance recommendations by task type. Workspace Lux summarizes the numbers most
+        relevant to everyday office planning so you can discuss requirements with facilities teams,
+        designers, or contractors without reading full technical manuals.
+      </p>
+      <p>
+        Standards typically specify maintained illuminance on the work plane — usually the desk surface
+        at about 30 inches (75 cm) above the floor — not raw fixture lumens. That is why calculators on
+        this site convert between lux, lumens, and watts rather than relying on wattage alone.
+      </p>
+
+      <h2>Recommended lux levels by space type</h2>
+      <p>
+        The table below lists common target ranges used in office and workspace design. Local codes,
+        client standards, or LEED/WELL requirements may differ. Always verify for your jurisdiction and
+        project type.
+      </p>
+      <table>
+        <thead>
+          <tr>
+            <th>Space type</th>
+            <th>Typical lux</th>
+            <th>Notes</th>
+          </tr>
+        </thead>
+        <tbody>
+          {
+            recommendedLuxLevels.map((row) => (
+              <tr>
+                <td>{row.space}</td>
+                <td>{row.lux}</td>
+                <td>{row.notes}</td>
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
+
+      <h2>300 lux vs 500 lux for office work</h2>
+      <p>
+        <strong>300 lux</strong> suits circulation areas, some meeting rooms, and offices where tasks are
+        primarily screen-based with good monitor brightness. It feels softer and uses less energy.
+        <strong>500 lux</strong> is the de facto standard for general office work including reading
+        printed documents, markup, and prolonged focus tasks. Many corporate fit-outs target 500 lux
+        maintained on the desk. Design and inspection work often needs 750–1000 lux.
+      </p>
+      <p>
+        Read our article <a href="/blog/300-lux-vs-500-lux-office" class="text-primary hover:underline">300 Lux vs 500 Lux for Office Work</a> for a deeper comparison.
+      </p>
+
+      <h2>Color temperature guidelines</h2>
+      <p>
+        Neutral white around <strong>4000K</strong> is the most common choice for corporate offices.
+        Home offices and reception areas may prefer 3000K–3500K for warmth. Design studios and video
+        setups often use 4000K–5000K for alertness and color discrimination. Avoid mixing very warm and
+        very cool sources in the same field of view.
+      </p>
+      <table>
+        <thead>
+          <tr>
+            <th>Kelvin</th>
+            <th>Description</th>
+            <th>Typical use</th>
+          </tr>
+        </thead>
+        <tbody>
+          {
+            colorTempScale.map((row) => (
+              <tr>
+                <td>{row.kelvin}</td>
+                <td>{row.label}</td>
+                <td>{row.feel}</td>
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
+
+      <h2>CRI (Color Rendering Index)</h2>
+      <p>
+        CRI measures how accurately a light source renders colors compared to natural light. For general
+        office work, <strong>CRI 80+</strong> is widely acceptable. Color-critical tasks — graphic
+        design, product review, print matching — benefit from <strong>CRI 90+</strong>. When specifying
+        LED products, check both CRI and R9 (red rendering), especially for skin tones and branding
+        materials in client-facing spaces.
+      </p>
+
+      <h2>Uniformity and glare</h2>
+      <p>
+        Standards also address uniformity (how evenly light is distributed) and glare control (UGR —
+        unified glare rating). A room can meet average lux on paper but still feel uncomfortable if one
+        area is much brighter than another or if fixtures create direct glare on screens. Professional
+        lighting design uses photometric software to model these factors; simplified calculators cannot.
+      </p>
+
+      <h2>How to use these standards in practice</h2>
+      <ol>
+        <li>Identify the primary tasks in each zone (desk work, meeting, reception).</li>
+        <li>Select a target lux range from the table above.</li>
+        <li>Use the <a href="/office-lighting-calculator" class="text-primary hover:underline">Office Lighting Calculator</a> to estimate total lumens and LED wattage.</li>
+        <li>Choose color temperature and CRI appropriate to the space.</li>
+        <li>Validate with a qualified designer or engineer for code-compliant commercial projects.</li>
+      </ol>
+
+      <p>
+        Workspace Lux tools provide simplified estimates aligned with common workplace guidance. They do
+        not replace photometric studies, code review, or manufacturer-specific layout tools.
+      </p>
+    </section>
+
+    <AdSlot />
+    <RelatedTools currentHref={path} />
+  </article>
+</BaseLayout>

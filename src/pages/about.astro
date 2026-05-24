@@ -1,0 +1,62 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { SITE } from '../data/tools';
+---
+
+<BaseLayout
+  title="About Workspace Lux — Practical Office & Desk Lighting Tools"
+  description="Workspace Lux provides free lighting calculators and guides to help you estimate lux, lumens, LED wattage, and color temperature for offices and desks."
+  path="/about"
+>
+  <article class="max-w-site mx-auto px-4 sm:px-6 py-10 prose-content">
+    <header class="mb-10">
+      <h1 class="text-3xl sm:text-4xl font-bold text-main mb-4">About Workspace Lux</h1>
+      <p class="text-lg text-muted max-w-3xl">
+        Practical lighting calculators and guides for offices, desks, studios, and modern workspaces —
+        without complex lighting design software.
+      </p>
+    </header>
+
+    <h2>Our purpose</h2>
+    <p>
+      Workspace Lux helps English-speaking users plan workspace lighting with clear numbers: how bright
+      a room or desk should be (lux), how much light output to shop for (lumens), roughly how much LED
+      power that implies (watts), and which color temperature fits the task. We built the site for home
+      office workers, small business owners, facility managers, and designers who need a fast baseline
+      before buying fixtures or talking to a contractor.
+    </p>
+
+    <h2>Who we serve</h2>
+    <p>
+      Our tools target everyday workspace scenarios — open offices, meeting rooms, home desks, coworking
+      areas, design studios, and video-call setups. We focus on the questions people actually search:
+      “How many lumens for a 20 m² office?”, “What lux for desk work?”, “3000K or 4000K for home
+      office?” Each calculator page includes explanations, examples, and FAQs so results are
+      understandable, not just a number on screen.
+    </p>
+
+    <h2>How calculations work</h2>
+    <p>
+      Formulas live in a shared library and run entirely in your browser. No accounts, no stored history,
+      no server-side processing of your inputs. Office and desk calculators combine room or desk area
+      with target lux to estimate lumens; lumens-to-watts uses LED efficacy presets you can adjust.
+      Color temperature recommendations come from curated presets aligned with common practice, not from
+      a black-box AI model.
+    </p>
+
+    <h2>Estimates, not engineering sign-off</h2>
+    <p>
+      Results are simplified planning estimates. Real projects depend on fixture photometrics, ceiling
+      height, surface reflectance, glare control, daylight contribution, controls, and local codes.
+      Workspace Lux is not a substitute for qualified lighting design or electrical engineering. Use our
+      output to compare options and prepare questions for professionals — not as a final specification.
+    </p>
+
+    <h2>Contact</h2>
+    <p>
+      Questions, corrections, or partnership ideas? Email us at
+      <a href={`mailto:${SITE.email}`} class="text-primary hover:underline">{SITE.email}</a> or visit
+      our <a href="/contact" class="text-primary hover:underline">Contact page</a>.
+    </p>
+  </article>
+</BaseLayout>

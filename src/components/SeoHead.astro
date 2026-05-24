@@ -1,0 +1,41 @@
+---
+import { SITE } from '../data/tools';
+
+interface Props {
+  title: string;
+  description: string;
+  path?: string;
+  ogType?: string;
+  schema?: Record<string, unknown> | Record<string, unknown>[];
+}
+
+const { title, description, path = '', ogType = 'website', schema } = Astro.props;
+const canonical = `${SITE.url}${path}`;
+const fullTitle = path === '/' || path === '' ? title : `${title} | ${SITE.name}`;
+---
+
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>{fullTitle}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={canonical} />
+<meta property="og:type" content={ogType} />
+<meta property="og:title" content={fullTitle} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonical} />
+<meta property="og:site_name" content={SITE.name} />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={fullTitle} />
+<meta name="twitter:description" content={description} />
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+  href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+  rel="stylesheet"
+/>
+{
+  schema && (
+    <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+  )
+}

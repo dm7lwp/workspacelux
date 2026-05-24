@@ -1,0 +1,44 @@
+---
+import '../styles/global.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import SeoHead from '../components/SeoHead.astro';
+import { SITE } from '../data/tools';
+
+interface Props {
+  title: string;
+  description: string;
+  path?: string;
+  schema?: Record<string, unknown> | Record<string, unknown>[];
+}
+
+const { title, description, path = '', schema } = Astro.props;
+
+const websiteSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: SITE.name,
+  url: SITE.url,
+  description: SITE.description,
+};
+
+const combinedSchema = schema
+  ? Array.isArray(schema)
+    ? [websiteSchema, ...schema]
+    : [websiteSchema, schema]
+  : websiteSchema;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <SeoHead title={title} description={description} path={path} schema={combinedSchema} />
+  </head>
+  <body>
+    <Header />
+    <main>
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>

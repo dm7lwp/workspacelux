@@ -1,0 +1,97 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { SITE } from '../data/tools';
+
+const lastUpdated = 'May 23, 2026';
+---
+
+<BaseLayout
+  title="Privacy Policy — Workspace Lux"
+  description="Privacy policy for Workspace Lux covering analytics, cookies, advertising, and contact form data."
+  path="/privacy-policy"
+>
+  <article class="max-w-site mx-auto px-4 sm:px-6 py-10 prose-content">
+    <header class="mb-10">
+      <h1 class="text-3xl sm:text-4xl font-bold text-main mb-4">Privacy Policy</h1>
+      <p class="text-sm text-muted">Last updated: {lastUpdated}</p>
+    </header>
+
+    <p>
+      Workspace Lux (“we”, “us”, “our”) operates {SITE.url}. This Privacy Policy explains how we collect,
+      use, and protect information when you visit our website or contact us.
+    </p>
+
+    <h2>Information we collect</h2>
+    <h3>Usage and analytics</h3>
+    <p>
+      We may use privacy-friendly analytics services such as Cloudflare Web Analytics and/or Google
+      Analytics to understand traffic patterns, popular pages, and general device or browser types.
+      These services help us improve content and performance. Analytics data is typically aggregated and
+      does not intentionally identify you personally.
+    </p>
+    <h3>Cookies and similar technologies</h3>
+    <p>
+      Our site may set essential cookies required for basic functionality. If we display advertising
+      through Google AdSense or similar partners, those services may use cookies or similar identifiers
+      to serve and measure ads, including personalized advertising where applicable and permitted by law.
+      You can manage cookie preferences through your browser settings and, where offered, vendor opt-out
+      tools.
+    </p>
+    <h3>Contact form and email</h3>
+    <p>
+      If you submit our contact form or email us directly, we receive the information you provide (such
+      as name, email address, and message content). We use this information only to respond to your
+      inquiry and maintain a record of correspondence as needed.
+    </p>
+
+    <h2>How we use information</h2>
+    <ul>
+      <li>Operate, maintain, and improve the website and calculators</li>
+      <li>Respond to messages and support requests</li>
+      <li>Monitor security, abuse, and technical performance</li>
+      <li>Comply with legal obligations</li>
+      <li>Display advertising where enabled, subject to partner policies</li>
+    </ul>
+
+    <h2>Third-party services</h2>
+    <p>
+      We may rely on third parties for hosting (e.g., Cloudflare Pages), analytics, advertising (e.g.,
+      Google AdSense), and contact forms (e.g., Formspree). These providers process data under their
+      own privacy policies. We encourage you to review those policies when you interact with embedded
+      services or follow external links.
+    </p>
+
+    <h2>Data retention</h2>
+    <p>
+      Analytics data is retained according to each provider’s settings. Contact messages are kept only as
+      long as needed to handle your request and for reasonable business records, unless a longer period
+      is required by law.
+    </p>
+
+    <h2>Your rights</h2>
+    <p>
+      Depending on your location, you may have rights to access, correct, delete, or restrict processing
+      of personal data, or to object to certain processing including targeted advertising. To exercise
+      these rights, contact us at
+      <a href={`mailto:${SITE.email}`} class="text-primary hover:underline">{SITE.email}</a>.
+    </p>
+
+    <h2>Children</h2>
+    <p>
+      Our site is not directed at children under 13. We do not knowingly collect personal information
+      from children.
+    </p>
+
+    <h2>Changes</h2>
+    <p>
+      We may update this Privacy Policy from time to time. The “Last updated” date at the top will change
+      when we do. Continued use of the site after changes constitutes acceptance of the revised policy.
+    </p>
+
+    <h2>Contact</h2>
+    <p>
+      Questions about this Privacy Policy? Email
+      <a href={`mailto:${SITE.email}`} class="text-primary hover:underline">{SITE.email}</a>.
+    </p>
+  </article>
+</BaseLayout>

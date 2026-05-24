@@ -1,0 +1,114 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { SITE } from '../data/tools';
+
+const lastUpdated = 'May 23, 2026';
+---
+
+<BaseLayout
+  title="Terms of Service — Workspace Lux"
+  description="Terms of service for Workspace Lux. Our calculators provide estimates only and do not constitute professional lighting or engineering advice."
+  path="/terms"
+>
+  <article class="max-w-site mx-auto px-4 sm:px-6 py-10 prose-content">
+    <header class="mb-10">
+      <h1 class="text-3xl sm:text-4xl font-bold text-main mb-4">Terms of Service</h1>
+      <p class="text-sm text-muted">Last updated: {lastUpdated}</p>
+    </header>
+
+    <p>
+      By accessing or using Workspace Lux at {SITE.url}, you agree to these Terms of Service. If you do
+      not agree, please do not use the site.
+    </p>
+
+    <h2>About the service</h2>
+    <p>
+      Workspace Lux provides free online lighting calculators, guides, and educational content for
+      offices, desks, and related workspaces. The site is offered “as is” for general information and
+      planning purposes.
+    </p>
+
+    <h2>Not professional advice</h2>
+    <p>
+      <strong>
+        Calculator results and guide content are simplified estimates only. They do not constitute
+        professional lighting design, electrical engineering, architectural, legal, or compliance advice.
+      </strong>
+      Actual lighting performance depends on fixture photometrics, mounting height, room geometry,
+      reflectance, controls, daylight, glare, local building codes, and occupational standards. You are
+      responsible for verifying requirements with qualified professionals and applicable authorities
+      before specifying, installing, or relying on any lighting system.
+    </p>
+
+    <h2>Accuracy and limitations</h2>
+    <p>
+      We strive for accurate formulas and helpful explanations, but we do not warrant that outputs are
+      complete, error-free, or suitable for any particular project. Presets and defaults are generalized
+      — your situation may differ. We may change calculators, content, or availability at any time
+      without notice.
+    </p>
+
+    <h2>Acceptable use</h2>
+    <p>You agree not to:</p>
+    <ul>
+      <li>Use the site in any unlawful manner or to harm others</li>
+      <li>Attempt to disrupt, scrape, or overload our systems</li>
+      <li>Misrepresent affiliation with Workspace Lux</li>
+      <li>Reproduce substantial portions of the site for commercial redistribution without permission</li>
+    </ul>
+
+    <h2>Intellectual property</h2>
+    <p>
+      Site content, branding, and original materials are owned by Workspace Lux or used with permission.
+      You may link to our pages and use calculators for personal or internal business planning. Other
+      uses require our prior written consent unless permitted by law.
+    </p>
+
+    <h2>Third-party links and advertising</h2>
+    <p>
+      The site may include links to third-party websites or display advertising. We are not responsible
+      for third-party content, products, or privacy practices. Any transactions with third parties are
+      solely between you and them.
+    </p>
+
+    <h2>Disclaimer of warranties</h2>
+    <p>
+      To the fullest extent permitted by law, Workspace Lux disclaims all warranties, express or implied,
+      including merchantability, fitness for a particular purpose, and non-infringement. Your use of the
+      site is at your sole risk.
+    </p>
+
+    <h2>Limitation of liability</h2>
+    <p>
+      To the fullest extent permitted by law, Workspace Lux and its operators shall not be liable for any
+      indirect, incidental, special, consequential, or punitive damages, or any loss of profits, data,
+      or business opportunities arising from your use of the site or reliance on calculator results —
+      even if advised of the possibility of such damages.
+    </p>
+
+    <h2>Indemnification</h2>
+    <p>
+      You agree to indemnify and hold harmless Workspace Lux from claims arising out of your misuse of the
+      site or violation of these Terms.
+    </p>
+
+    <h2>Governing law</h2>
+    <p>
+      These Terms are governed by applicable laws in the jurisdiction where Workspace Lux operates,
+      without regard to conflict-of-law principles. Disputes shall be resolved in the competent courts of
+      that jurisdiction, unless mandatory consumer protection laws in your country provide otherwise.
+    </p>
+
+    <h2>Changes</h2>
+    <p>
+      We may update these Terms from time to time. Continued use after the updated date constitutes
+      acceptance of the revised Terms.
+    </p>
+
+    <h2>Contact</h2>
+    <p>
+      Questions about these Terms? Email
+      <a href={`mailto:${SITE.email}`} class="text-primary hover:underline">{SITE.email}</a>.
+    </p>
+  </article>
+</BaseLayout>

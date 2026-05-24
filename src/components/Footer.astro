@@ -1,0 +1,74 @@
+---
+import { tools, SITE } from '../data/tools';
+
+const currentYear = new Date().getFullYear();
+---
+
+<footer class="border-t border-border bg-surface mt-16">
+  <div class="max-w-site mx-auto px-4 sm:px-6 py-12">
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-10">
+      <div class="md:col-span-1">
+        <a href="/" class="flex items-center gap-2 mb-4">
+          <span
+            class="flex h-9 w-9 items-center justify-center rounded-lg bg-primary/10 text-primary font-bold text-sm"
+            aria-hidden="true"
+          >
+            lx
+          </span>
+          <span class="font-semibold text-main">{SITE.name}</span>
+        </a>
+        <p class="text-sm text-muted">
+          {SITE.description}
+        </p>
+      </div>
+
+      <div>
+        <h3 class="text-sm font-semibold text-main mb-4">Tools</h3>
+        <ul class="space-y-2">
+          {
+            tools
+              .filter((t) => t.category === 'tool')
+              .map((tool) => (
+                <li>
+                  <a href={tool.href} class="text-sm text-muted hover:text-primary">
+                    {tool.title}
+                  </a>
+                </li>
+              ))
+          }
+        </ul>
+      </div>
+
+      <div>
+        <h3 class="text-sm font-semibold text-main mb-4">Guides</h3>
+        <ul class="space-y-2">
+          {
+            tools
+              .filter((t) => t.category === 'guide' || t.category === 'blog')
+              .map((guide) => (
+                <li>
+                  <a href={guide.href} class="text-sm text-muted hover:text-primary">
+                    {guide.title}
+                  </a>
+                </li>
+              ))
+          }
+        </ul>
+      </div>
+
+      <div>
+        <h3 class="text-sm font-semibold text-main mb-4">Company</h3>
+        <ul class="space-y-2">
+          <li><a href="/about" class="text-sm text-muted hover:text-primary">About</a></li>
+          <li><a href="/contact" class="text-sm text-muted hover:text-primary">Contact</a></li>
+          <li><a href="/privacy-policy" class="text-sm text-muted hover:text-primary">Privacy Policy</a></li>
+          <li><a href="/terms" class="text-sm text-muted hover:text-primary">Terms</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="mt-10 pt-8 border-t border-border text-sm text-muted text-center">
+      © {currentYear} {SITE.name}. All rights reserved.
+    </div>
+  </div>
+</footer>
