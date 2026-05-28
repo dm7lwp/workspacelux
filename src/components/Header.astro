@@ -1,13 +1,10 @@
 ---
-import { tools } from '../data/tools';
+import { calculators, guides } from '../data/tools';
 
 const navLinks = [
   { label: 'About', href: '/about' },
   { label: 'Contact', href: '/contact' },
 ];
-
-const toolLinks = tools.filter((t) => t.category === 'tool');
-const guideLinks = tools.filter((t) => t.category === 'guide' || t.category === 'blog');
 ---
 
 <header class="sticky top-0 z-50 bg-surface/95 backdrop-blur border-b border-border">
@@ -21,7 +18,7 @@ const guideLinks = tools.filter((t) => t.category === 'guide' || t.category === 
           lx
         </span>
         <span class="font-semibold text-main group-hover:text-primary transition-colors">
-          Workspace Lux
+          WorkspaceLux
         </span>
       </a>
 
@@ -32,7 +29,7 @@ const guideLinks = tools.filter((t) => t.category === 'guide' || t.category === 
             class="px-3 py-2 text-sm font-medium text-muted hover:text-main rounded-lg hover:bg-slate-50 flex items-center gap-1"
             aria-haspopup="true"
           >
-            Tools
+            Calculators
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
             </svg>
@@ -41,8 +38,15 @@ const guideLinks = tools.filter((t) => t.category === 'guide' || t.category === 
             class="absolute left-0 top-full pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible group-focus-within:opacity-100 group-focus-within:visible transition-all"
           >
             <div class="w-72 bg-surface rounded-card border border-border shadow-lg p-2">
+              <a
+                href="/calculators"
+                class="block px-3 py-2 rounded-lg text-sm font-medium text-primary hover:bg-slate-50"
+              >
+                All Calculators
+              </a>
+              <div class="border-t border-border my-1"></div>
               {
-                toolLinks.map((tool) => (
+                calculators.map((tool) => (
                   <a
                     href={tool.href}
                     class="block px-3 py-2 rounded-lg text-sm text-main hover:bg-slate-50 hover:text-primary"
@@ -70,8 +74,15 @@ const guideLinks = tools.filter((t) => t.category === 'guide' || t.category === 
             class="absolute left-0 top-full pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible group-focus-within:opacity-100 group-focus-within:visible transition-all"
           >
             <div class="w-72 bg-surface rounded-card border border-border shadow-lg p-2">
+              <a
+                href="/guides"
+                class="block px-3 py-2 rounded-lg text-sm font-medium text-primary hover:bg-slate-50"
+              >
+                All Guides
+              </a>
+              <div class="border-t border-border my-1"></div>
               {
-                guideLinks.map((guide) => (
+                guides.map((guide) => (
                   <a
                     href={guide.href}
                     class="block px-3 py-2 rounded-lg text-sm text-main hover:bg-slate-50 hover:text-primary"
@@ -117,17 +128,23 @@ const guideLinks = tools.filter((t) => t.category === 'guide' || t.category === 
     aria-label="Mobile navigation"
   >
     <div class="max-w-site mx-auto px-4 py-4 space-y-1">
-      <p class="px-3 py-2 text-xs font-semibold uppercase tracking-wider text-muted">Tools</p>
+      <a href="/calculators" class="block px-3 py-2 text-sm font-medium text-primary rounded-lg">
+        All Calculators
+      </a>
+      <p class="px-3 py-2 text-xs font-semibold uppercase tracking-wider text-muted">Calculators</p>
       {
-        toolLinks.map((tool) => (
+        calculators.map((tool) => (
           <a href={tool.href} class="block px-3 py-2 text-sm text-main hover:text-primary rounded-lg">
             {tool.title}
           </a>
         ))
       }
-      <p class="px-3 py-2 mt-4 text-xs font-semibold uppercase tracking-wider text-muted">Guides</p>
+      <a href="/guides" class="block px-3 py-2 mt-4 text-sm font-medium text-primary rounded-lg">
+        All Guides
+      </a>
+      <p class="px-3 py-2 text-xs font-semibold uppercase tracking-wider text-muted">Guides</p>
       {
-        guideLinks.map((guide) => (
+        guides.map((guide) => (
           <a href={guide.href} class="block px-3 py-2 text-sm text-main hover:text-primary rounded-lg">
             {guide.title}
           </a>

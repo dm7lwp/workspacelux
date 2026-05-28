@@ -1,0 +1,68 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import FaqBlock from '../../components/FaqBlock.astro';
+import { calculators } from '../../data/tools';
+import { homeFaqs } from '../../data/faqs';
+---
+
+<BaseLayout
+  title="Office Lighting Calculators — Free Workspace Lighting Tools"
+  description="Free tools to calculate lux, lumens, wattage, color temperature, and LED energy savings for offices and workspaces."
+  path="/calculators"
+>
+  <article class="max-w-site mx-auto px-4 sm:px-6 py-10">
+    <header class="mb-10">
+      <h1 class="text-3xl sm:text-4xl font-bold text-main mb-4">Office Lighting Calculators</h1>
+      <p class="text-lg text-muted max-w-3xl">
+        Free tools to calculate lux, lumens, wattage, color temperature, and LED energy savings for
+        offices, desks, meeting rooms, and workspaces.
+      </p>
+    </header>
+
+    <section class="mb-12">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {
+          calculators.map((tool) => (
+            <a href={tool.href} class="card p-6 hover:border-primary/30 hover:shadow-md transition-all group">
+              <h2 class="font-semibold text-main group-hover:text-primary mb-2">{tool.title}</h2>
+              <p class="text-sm text-muted mb-4">{tool.description}</p>
+              <span class="text-sm font-medium text-primary">Use calculator →</span>
+            </a>
+          ))
+        }
+      </div>
+    </section>
+
+    <section class="prose-content mb-12">
+      <h2>Recommended user paths</h2>
+      <ul>
+        <li>
+          <strong>Planning a whole office?</strong> Start with the
+          <a href="/office-lighting-calculator">Office Lighting Calculator</a>.
+        </li>
+        <li>
+          <strong>Setting up a desk or home office?</strong> Use the
+          <a href="/desk-lighting-calculator">Desk Lighting Calculator</a>.
+        </li>
+        <li>
+          <strong>Converting units?</strong> Try
+          <a href="/lux-to-lumens-calculator">Lux to Lumens</a> or
+          <a href="/lumens-to-lux-calculator">Lumens to Lux</a>.
+        </li>
+        <li>
+          <strong>Upgrading to LED?</strong> Estimate savings with the
+          <a href="/led-savings-calculator">LED Savings Calculator</a>.
+        </li>
+      </ul>
+
+      <h2>How our calculators work</h2>
+      <p>
+        Calculations run entirely in your browser based on room area, target lux, fixture efficiency, and
+        usage hours. No account required and no input data is stored on our servers. Results are planning
+        estimates — for commercial projects, consult a qualified lighting designer or electrician.
+      </p>
+    </section>
+
+    <FaqBlock faqs={homeFaqs} />
+  </article>
+</BaseLayout>

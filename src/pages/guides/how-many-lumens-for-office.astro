@@ -1,0 +1,102 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import RelatedTools from '../../components/RelatedTools.astro';
+import AdSlot from '../../components/AdSlot.astro';
+
+const path = '/guides/how-many-lumens-for-office';
+---
+
+<BaseLayout
+  title="How Many Lumens Do You Need for an Office? — Practical Guide"
+  description="Learn how to estimate total lumens for an office based on room size and target lux. Includes examples for 10, 20, and 50 m² offices at 300–500 lux."
+  path={path}
+>
+  <article class="max-w-site mx-auto px-4 sm:px-6 py-10">
+    <header class="mb-10">
+      <p class="text-sm text-muted mb-2">WorkspaceLux · Guides</p>
+      <h1 class="text-3xl sm:text-4xl font-bold text-main mb-4">How Many Lumens Do You Need for an Office?</h1>
+      <p class="text-lg text-muted max-w-3xl">
+        A step-by-step guide to estimating total lumens from room area and target lux — with real
+        examples you can use before buying fixtures.
+      </p>
+    </header>
+
+    <section class="prose-content">
+      <h2>Quick answer</h2>
+      <p>
+        Multiply your target lux by room area in square meters: <strong>lumens = lux × m²</strong>. A
+        typical 20 m² office at 500 lux needs about <strong>10,000 lumens</strong>.
+      </p>
+
+      <h2>Start with lux, not lumens</h2>
+      <p>
+        When people search “how many lumens for office,” they usually want to know how bright the space
+        should feel and how much light output to buy. Lighting professionals start with <strong>lux</strong>
+        — illuminance on the work surface — because office tasks are defined that way in standards. Most
+        general office work targets <strong>300–500 lux</strong> on the desk. Once you know lux and room
+        area, converting to lumens is simple.
+      </p>
+
+      <h2>The formula</h2>
+      <p><strong>Total lumens = lux × area (m²)</strong></p>
+      <p>
+        If your room is measured in square feet, convert first: m² = ft² × 0.092903. Then multiply by
+        your lux target. Use our <a href="/lux-to-lumens-calculator" class="text-primary hover:underline">Lux to Lumens Calculator</a> for instant results.
+      </p>
+
+      <h2>Examples by office size</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Office size</th>
+            <th>300 lux</th>
+            <th>500 lux</th>
+            <th>750 lux</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>10 m² (small home office)</td><td>3,000 lm</td><td>5,000 lm</td><td>7,500 lm</td></tr>
+          <tr><td>20 m² (typical private office)</td><td>6,000 lm</td><td>10,000 lm</td><td>15,000 lm</td></tr>
+          <tr><td>50 m² (team room / open zone)</td><td>15,000 lm</td><td>25,000 lm</td><td>37,500 lm</td></tr>
+        </tbody>
+      </table>
+
+      <h2>From lumens to LED wattage</h2>
+      <p>
+        Divide total lumens by LED efficacy (lm/W). At 100 lm/W, a 10,000 lumen office needs about 100 W
+        of LED lighting across all fixtures combined — not 100 W per bulb. A 2×4 LED panel might deliver
+        3,500 lumens at 40 W, so a 20 m² office at 500 lux might need roughly three such panels before
+        accounting for layout and losses.
+      </p>
+      <p>
+        Try the <a href="/office-lighting-calculator" class="text-primary hover:underline">Office Lighting Calculator</a> for fixture count suggestions and workspace-type presets.
+      </p>
+
+      <h2>Common mistakes</h2>
+      <ul>
+        <li>Using lumens per bulb instead of total lumens for the room</li>
+        <li>Ignoring ceiling height and fixture distribution</li>
+        <li>Assuming one lux target fits all zones in an open office</li>
+        <li>Forgetting to convert square feet to square meters</li>
+      </ul>
+
+      <h2>Why your real project may need more (or less)</h2>
+      <ul>
+        <li><strong>Ceiling height</strong> — higher ceilings spread light over more volume.</li>
+        <li><strong>Room reflectance</strong> — dark walls absorb light; light walls reflect it.</li>
+        <li><strong>Fixture distribution</strong> — beam angle and mounting affect desk illuminance.</li>
+        <li><strong>Task type</strong> — design studios need more lux than casual meeting areas.</li>
+      </ul>
+
+      <h2>Quick takeaway</h2>
+      <p>
+        For a typical 20 m² office at 500 lux, plan for about <strong>10,000 lumens</strong> and roughly
+        <strong>100 W of LED</strong> at 100 lm/W before layout adjustments. Adjust lux up or down based
+        on whether work is screen-only (300 lux may suffice) or paper-heavy (500 lux is safer).
+      </p>
+    </section>
+
+    <AdSlot />
+    <RelatedTools currentHref={path} title="Related Calculators & Guides" />
+  </article>
+</BaseLayout>

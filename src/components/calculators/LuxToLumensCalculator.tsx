@@ -23,7 +23,7 @@ export default function LuxToLumensCalculator() {
         <div><label htmlFor="area" className={labelClass}>Area</label>
           <input id="area" type="number" min="0.1" step="0.1" value={area} onChange={(e) => setArea(e.target.value)} className={inputClass} /></div>
         <div><label htmlFor="area-unit" className={labelClass}>Area unit</label>
-          <select id="area-unit" value={unit} onChange={(e) => setUnit(e.target.value as 'sqm' | 'sqft')} className ш={inputClass}>
+          <select id="area-unit" value={unit} onChange={(e) => setUnit(e.target.value as 'sqm' | 'sqft')} className={inputClass}>
             <option value="sqm">Square meters (m²)</option><option value="sqft">Square feet (ft²)</option>
           </select></div>
       </div>

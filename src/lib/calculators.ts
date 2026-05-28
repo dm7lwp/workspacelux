@@ -161,6 +161,32 @@ export interface LuxToLumensResult {
   lumens: number;
 }
 
+export interface LumensToLuxInput {
+  lumens: number;
+  area: number;
+  unit: 'sqm' | 'sqft';
+}
+
+export interface LumensToLuxResult {
+  areaM2: number;
+  lumens: number;
+  lux: number;
+}
+
+export function calculateLumensToLux(input: LumensToLuxInput): LumensToLuxResult | null {
+  const areaVal = validatePositive(input.area, 'Area');
+  const lumensVal = validatePositive(input.lumens, 'Lumens');
+
+  if (!areaVal.valid || !lumensVal.valid) {
+    return null;
+  }
+
+  const areaM2 = input.unit === 'sqm' ? input.area : sqftToSqm(input.area);
+  const lux = input.lumens / areaM2;
+
+  return { areaM2, lumens: input.lumens, lux };
+}
+
 export function calculateLuxToLumens(input: LuxToLumensInput): LuxToLumensResult | null {
   const areaVal = validatePositive(input.area, 'Area');
   const luxVal = validateLux(input.lux);

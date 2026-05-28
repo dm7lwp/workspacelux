@@ -1,0 +1,85 @@
+---
+import ToolLayout from '../layouts/ToolLayout.astro';
+import LumensToLuxCalculator from '../components/calculators/LumensToLuxCalculator';
+import FaqBlock from '../components/FaqBlock.astro';
+import RelatedTools from '../components/RelatedTools.astro';
+import AdSlot from '../components/AdSlot.astro';
+import Disclaimer from '../components/Disclaimer.astro';
+import { lumensToLuxFaqs } from '../data/faqs';
+
+const path = '/lumens-to-lux-calculator';
+---
+
+<ToolLayout
+  title="Lumens to Lux Calculator — Convert Lumens to Lux by Area"
+  description="Convert total lumens and floor area into estimated lux. Check whether existing office lighting is bright enough for your workspace."
+  path={path}
+  h1="Lumens to Lux Calculator"
+  subtitle="Enter total lumens and area to estimate illuminance — useful for checking if current fixtures meet office lighting targets."
+  faqSchema={lumensToLuxFaqs}
+>
+  <section class="mb-10">
+    <h2 class="text-2xl font-semibold text-main mb-6">Calculator</h2>
+    <LumensToLuxCalculator client:load />
+  </section>
+
+  <AdSlot />
+
+  <section class="prose-content">
+    <h2>How this calculator works</h2>
+    <p>
+      Lumens describe total light output from a fixture or group of fixtures. Lux describes how much of
+      that light reaches a surface per square meter. To convert lumens to lux, divide total lumens by
+      the area the light covers: <strong>lux = lumens ÷ area (m²)</strong>. This is the inverse of the
+      lux-to-lumens formula and helps you answer “how bright will this setup actually be?”
+    </p>
+    <p>
+      Use this calculator when you already know fixture lumen ratings and want to check whether they meet
+      a lux target. For example, two 5,000-lumen panels in a 20 m² office deliver about 500 lux if light
+      is evenly distributed — a common general office target. Real rooms rarely distribute light
+      perfectly; ceiling height, beam angles, and wall color all affect actual lux at the desk.
+    </p>
+    <p>
+      This tool assumes even distribution over the entered floor area — a simplified planning estimate.
+      For sizing a new installation from a lux target, use our
+      <a href="/lux-to-lumens-calculator">Lux to Lumens Calculator</a> or
+      <a href="/office-lighting-calculator">Office Lighting Calculator</a> instead.
+    </p>
+
+    <h2>Example calculations</h2>
+    <p>
+      <strong>10,000 lumens over 20 m²:</strong> 10,000 ÷ 20 = 500 lux — suitable for general office
+      work.
+    </p>
+    <p>
+      <strong>6,000 lumens over 20 m²:</strong> 6,000 ÷ 20 = 300 lux — may work for screen-focused
+      tasks with supplemental desk lighting.
+    </p>
+    <p>
+      <strong>3,000 lumens over 4 m² desk area:</strong> 3,000 ÷ 4 = 750 lux — bright task lighting for
+      detailed work.
+    </p>
+
+    <h2>Recommended lux levels</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Space</th>
+          <th>Typical lux</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>General office</td><td>300–500</td></tr>
+        <tr><td>Detailed reading / drawing</td><td>750–1000</td></tr>
+        <tr><td>Meeting room</td><td>300–500</td></tr>
+        <tr><td>Reception</td><td>150–300</td></tr>
+        <tr><td>Corridor</td><td>100–200</td></tr>
+      </tbody>
+    </table>
+
+    <Disclaimer />
+  </section>
+
+  <FaqBlock faqs={lumensToLuxFaqs} />
+  <RelatedTools currentHref={path} />
+</ToolLayout>

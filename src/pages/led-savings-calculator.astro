@@ -1,0 +1,106 @@
+---
+import ToolLayout from '../layouts/ToolLayout.astro';
+import LightingSavingsCalculator from '../components/calculators/LightingSavingsCalculator';
+import FaqBlock from '../components/FaqBlock.astro';
+import RelatedTools from '../components/RelatedTools.astro';
+import AdSlot from '../components/AdSlot.astro';
+import Disclaimer from '../components/Disclaimer.astro';
+import { savingsFaqs } from '../data/faqs';
+
+const path = '/led-savings-calculator';
+---
+
+<ToolLayout
+  title="LED Savings Calculator — Office Lighting Energy Cost Estimate"
+  description="Calculate annual energy and cost savings when upgrading office fluorescent, halogen, or legacy lighting to LED fixtures."
+  path={path}
+  h1="LED Savings Calculator"
+  subtitle="Estimate how much electricity and money you can save by replacing office lighting with LED — based on fixture count, wattage, hours, and local rates."
+  faqSchema={savingsFaqs}
+>
+  <section class="mb-10">
+    <h2 class="text-2xl font-semibold text-main mb-6">Calculator</h2>
+    <LightingSavingsCalculator client:load />
+  </section>
+
+  <AdSlot />
+
+  <section class="prose-content">
+    <h2>How this calculator works</h2>
+    <p>
+      Upgrading office lighting to LED is one of the most common energy retrofit projects because
+      lighting often runs many hours per day and legacy systems draw more power than modern LED
+      equivalents for the same or better light output. This calculator compares total wattage before
+      and after a retrofit, applies your operating schedule, and converts the difference into annual
+      kilowatt-hours and cost savings.
+    </p>
+    <p>
+      Start with the number of fixtures you plan to replace — for example, twenty 2×4 troffers in an
+      open office. Enter the existing wattage per fixture (nameplate or measured) and the expected LED
+      wattage per fixture after upgrade. Preset buttons help with typical fluorescent troffers, halogen
+      downlights, and common LED replacements, but you should confirm values against product datasheets
+      for your specific project.
+    </p>
+    <p>
+      Operating hours matter as much as wattage. Enter average hours per day the lights are on and how
+      many days per year they operate. A standard weekday office might use 10 hours/day and 260 working
+      days/year if you include early arrivals and cleaning staff. Multiply total watts by hours and
+      days, divide by 1,000 to get kWh, then multiply by your electricity rate ($/kWh) for annual cost.
+    </p>
+    <p>
+      The formula is straightforward: annual kWh = (total watts × hours × days) ÷ 1,000. Savings equal
+      old minus new. Percent reduction shows how much load you remove from the lighting circuit. A move
+      from 72 W fluorescent troffers to 40 W LED panels across twenty fixtures cuts 640 W of continuous
+      load — roughly 1,664 kWh per year at 10 h/day and 260 days, which at $0.15/kWh is about $250
+      annually before demand charges or rebates.
+    </p>
+    <p>
+      This tool does not model controls such as occupancy sensors, daylight dimming, or scheduled
+      off-times that further reduce runtime. It also excludes maintenance savings from fewer lamp
+      changes, utility rebates, tax incentives, or demand charges on commercial tariffs. Use the output
+      for budgeting and stakeholder conversations; pair it with our Office Lighting Calculator to
+      right-size lumen output and our Lumens to Watts Calculator to sanity-check LED efficacy.
+    </p>
+    <Disclaimer />
+
+    <h2>Example upgrade scenarios</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Scenario</th>
+          <th>Old → New (per fixture)</th>
+          <th>20 fixtures, 10h/day, 260 days, $0.15/kWh</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>2×4 fluorescent to LED panel</td>
+          <td>72 W → 40 W</td>
+          <td>~$250/year saved</td>
+        </tr>
+        <tr>
+          <td>Halogen downlight to LED</td>
+          <td>50 W → 12 W</td>
+          <td>~$296/year saved</td>
+        </tr>
+        <tr>
+          <td>High-bay metal halide to LED</td>
+          <td>400 W → 150 W</td>
+          <td>~$975/year saved (20 bays)</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>What affects real-world payback</h2>
+    <ul>
+      <li>Product cost and installation labor for new fixtures or retrofits</li>
+      <li>Utility rebates and local efficiency programs</li>
+      <li>Actual burn hours vs assumed schedule</li>
+      <li>Whether you need more or fewer fixtures after redesign</li>
+      <li>Commercial demand charges on your electricity bill</li>
+    </ul>
+  </section>
+
+  <FaqBlock faqs={savingsFaqs} />
+  <RelatedTools currentHref={path} />
+</ToolLayout>

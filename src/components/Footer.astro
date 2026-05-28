@@ -1,5 +1,5 @@
 ---
-import { tools, SITE } from '../data/tools';
+import { calculators, guides, SITE } from '../data/tools';
 
 const currentYear = new Date().getFullYear();
 ---
@@ -23,18 +23,19 @@ const currentYear = new Date().getFullYear();
       </div>
 
       <div>
-        <h3 class="text-sm font-semibold text-main mb-4">Tools</h3>
+        <h3 class="text-sm font-semibold text-main mb-4">Calculators</h3>
         <ul class="space-y-2">
+          <li>
+            <a href="/calculators" class="text-sm text-muted hover:text-primary">All Calculators</a>
+          </li>
           {
-            tools
-              .filter((t) => t.category === 'tool')
-              .map((tool) => (
-                <li>
-                  <a href={tool.href} class="text-sm text-muted hover:text-primary">
-                    {tool.title}
-                  </a>
-                </li>
-              ))
+            calculators.map((tool) => (
+              <li>
+                <a href={tool.href} class="text-sm text-muted hover:text-primary">
+                  {tool.title}
+                </a>
+              </li>
+            ))
           }
         </ul>
       </div>
@@ -42,16 +43,17 @@ const currentYear = new Date().getFullYear();
       <div>
         <h3 class="text-sm font-semibold text-main mb-4">Guides</h3>
         <ul class="space-y-2">
+          <li>
+            <a href="/guides" class="text-sm text-muted hover:text-primary">All Guides</a>
+          </li>
           {
-            tools
-              .filter((t) => t.category === 'guide' || t.category === 'blog')
-              .map((guide) => (
-                <li>
-                  <a href={guide.href} class="text-sm text-muted hover:text-primary">
-                    {guide.title}
-                  </a>
-                </li>
-              ))
+            guides.map((guide) => (
+              <li>
+                <a href={guide.href} class="text-sm text-muted hover:text-primary">
+                  {guide.title}
+                </a>
+              </li>
+            ))
           }
         </ul>
       </div>

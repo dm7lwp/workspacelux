@@ -176,6 +176,34 @@ export const colorTempFaqs: FaqItem[] = [
   },
 ];
 
+export const lumensToLuxFaqs: FaqItem[] = [
+  {
+    question: 'What is the formula to convert lumens to lux?',
+    answer:
+      'Lux = lumens ÷ area (m²). If you know area in square feet, convert to m² first: area_m² = ft² × 0.092903.',
+  },
+  {
+    question: 'How many lux is 10,000 lumens in a 20 m² office?',
+    answer:
+      '10,000 lumens over 20 m² equals 500 lux. This is a common target for general office work.',
+  },
+  {
+    question: 'Why is actual lux lower than this calculator shows?',
+    answer:
+      'Real installations lose light to ceiling height, fixture beam angles, wall absorption, and dirt on lenses. This calculator assumes even distribution over the floor area — a simplified planning estimate.',
+  },
+  {
+    question: 'Can I use this to check if my desk lamp is bright enough?',
+    answer:
+      'Yes, if you know the lamp lumen output and the desk area it covers. Enter lumens and desk surface area to see estimated lux. For task lighting, 300–500 lux on the work surface is typical.',
+  },
+  {
+    question: 'What lux level is too low for office work?',
+    answer:
+      'Below 200 lux, most office tasks become uncomfortable without supplemental task lighting. General desk work usually targets 300–500 lux.',
+  },
+];
+
 export const savingsFaqs: FaqItem[] = [
   {
     question: 'How much can I save by switching office lights to LED?',

@@ -1,0 +1,49 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { guides, guideCategories } from '../../data/tools';
+---
+
+<BaseLayout
+  title="Office Lighting Guides — Practical Workspace Lighting Advice"
+  description="Practical guides for planning better lighting in offices, home workspaces, meeting rooms, and commercial environments."
+  path="/guides"
+>
+  <article class="max-w-site mx-auto px-4 sm:px-6 py-10">
+    <header class="mb-10">
+      <h1 class="text-3xl sm:text-4xl font-bold text-main mb-4">Office Lighting Guides</h1>
+      <p class="text-lg text-muted max-w-3xl">
+        Practical guides for planning better lighting in offices, home workspaces, meeting rooms, and
+        commercial environments.
+      </p>
+    </header>
+
+    {
+      guideCategories.map((category) => {
+        const categoryGuides = guides.filter((g) => g.guideCategory === category);
+        if (categoryGuides.length === 0) return null;
+        return (
+          <section class="mb-12">
+            <h2 class="text-xl font-semibold text-main mb-6">{category}</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              {categoryGuides.map((guide) => (
+                <a href={guide.href} class="card p-6 hover:border-primary/30 hover:shadow-md transition-all group">
+                  <h3 class="font-semibold text-main group-hover:text-primary mb-2">{guide.title}</h3>
+                  <p class="text-sm text-muted">{guide.description}</p>
+                </a>
+              ))}
+            </div>
+          </section>
+        );
+      })
+    }
+
+    <section class="prose-content">
+      <h2>Use calculators with these guides</h2>
+      <p>
+        Each guide links to relevant calculators so you can move from advice to numbers quickly. Start with
+        our <a href="/office-lighting-calculator">Office Lighting Calculator</a> or browse all
+        <a href="/calculators">calculators</a>.
+      </p>
+    </section>
+  </article>
+</BaseLayout>
