@@ -12,29 +12,28 @@ const path = '/office-lighting-calculator';
 ---
 
 <ToolLayout
-  title="Office Lighting Calculator — Lux, Lumens & LED Wattage"
-  description="Calculate how many lumens and LED watts you need for an office, meeting room, open workspace, or home office based on room size and target lux level."
+  title="Office Lighting Plan Calculator — Lux, Lumens, Fixtures & Layout"
+  description="Generate an office lighting plan with target lux, total lumens, LED wattage, fixture count, lighting mix, layout, and energy cost."
   path={path}
-  h1="Office Lighting Calculator"
-  subtitle="Estimate lumens, LED wattage, color temperature, and fixture count for offices, meeting rooms, open workspaces, and home offices."
+  h1="Office Lighting Plan Calculator"
+  subtitle="Calculate lux, lumens, LED wattage, fixture count, lighting mix, layout, and energy cost for your workspace."
   faqSchema={officeFaqs}
 >
   <section class="mb-10">
-    <h2 class="text-2xl font-semibold text-main mb-6">Calculator</h2>
+    <h2 class="text-2xl font-semibold text-main mb-6">Create your lighting plan</h2>
     <OfficeLightingCalculator client:load />
   </section>
 
   <AdSlot />
 
   <section class="prose-content">
-    <h2>How this calculator works</h2>
+    <h2>How this lighting plan calculator works</h2>
     <p>
-      Office lighting planning starts with a target illuminance level measured in lux — how much light
-      reaches your work surfaces. Unlike lumens, which describe total light output from fixtures, lux
-      tells you whether a desk or floor area is bright enough for the tasks people perform there.
-      Building codes, workplace guidelines, and ergonomic recommendations usually express targets in
-      lux, which is why this calculator begins with your room dimensions and a lux goal rather than
-      fixture wattage alone.
+      Office lighting planning starts with a target illuminance level measured in lux, then turns that
+      requirement into a practical fixture plan. This calculator uses room size, workspace type,
+      fixture output, LED efficiency, and operating hours to estimate total lumens, LED wattage,
+      fixture count, lighting mix, layout, and energy cost. The goal is to help you move from “how
+      many lumens do I need?” to “how should this office be lit?”
     </p>
     <p>
       The first step is room area. Enter length and width in meters or feet. If you use feet, the

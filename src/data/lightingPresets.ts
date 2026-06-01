@@ -4,6 +4,13 @@ export interface WorkspaceType {
   defaultLux: number;
   colorTemp: string;
   cri: string;
+  lightingMix: LightingMix;
+}
+
+export interface LightingMix {
+  ambient: number;
+  task: number;
+  accent: number;
 }
 
 export const workspaceTypes: WorkspaceType[] = [
@@ -13,6 +20,7 @@ export const workspaceTypes: WorkspaceType[] = [
     defaultLux: 500,
     colorTemp: '4000K',
     cri: '80+',
+    lightingMix: { ambient: 80, task: 15, accent: 5 },
   },
   {
     id: 'open-office',
@@ -20,6 +28,7 @@ export const workspaceTypes: WorkspaceType[] = [
     defaultLux: 500,
     colorTemp: '4000K',
     cri: '80+',
+    lightingMix: { ambient: 80, task: 15, accent: 5 },
   },
   {
     id: 'meeting-room',
@@ -27,6 +36,7 @@ export const workspaceTypes: WorkspaceType[] = [
     defaultLux: 300,
     colorTemp: '3500K–4000K',
     cri: '80+',
+    lightingMix: { ambient: 70, task: 10, accent: 20 },
   },
   {
     id: 'home-office',
@@ -34,6 +44,7 @@ export const workspaceTypes: WorkspaceType[] = [
     defaultLux: 500,
     colorTemp: '3000K–4000K',
     cri: '80+',
+    lightingMix: { ambient: 65, task: 30, accent: 5 },
   },
   {
     id: 'reception',
@@ -41,6 +52,7 @@ export const workspaceTypes: WorkspaceType[] = [
     defaultLux: 300,
     colorTemp: '3000K–3500K',
     cri: '80+',
+    lightingMix: { ambient: 50, task: 10, accent: 40 },
   },
   {
     id: 'conference-room',
@@ -48,6 +60,7 @@ export const workspaceTypes: WorkspaceType[] = [
     defaultLux: 500,
     colorTemp: '4000K',
     cri: '80+',
+    lightingMix: { ambient: 70, task: 10, accent: 20 },
   },
   {
     id: 'design-studio',
@@ -55,6 +68,7 @@ export const workspaceTypes: WorkspaceType[] = [
     defaultLux: 750,
     colorTemp: '4000K–5000K',
     cri: '90+',
+    lightingMix: { ambient: 65, task: 25, accent: 10 },
   },
   {
     id: 'coworking',
@@ -62,6 +76,53 @@ export const workspaceTypes: WorkspaceType[] = [
     defaultLux: 500,
     colorTemp: '3500K–4000K',
     cri: '80+',
+    lightingMix: { ambient: 75, task: 20, accent: 5 },
+  },
+];
+
+export interface FixtureType {
+  id: string;
+  label: string;
+  defaultLumens: number;
+  description: string;
+}
+
+export const fixtureTypes: FixtureType[] = [
+  {
+    id: 'led-panel',
+    label: 'LED Panel',
+    defaultLumens: 4000,
+    description: 'Best for even ambient light in grid ceilings and open offices.',
+  },
+  {
+    id: 'linear-light',
+    label: 'Linear Light',
+    defaultLumens: 5000,
+    description: 'Good for long desk rows, conference tables, and clean ceiling lines.',
+  },
+  {
+    id: 'downlight',
+    label: 'Downlight',
+    defaultLumens: 1200,
+    description: 'Works for smaller offices, corridors, reception zones, and layered plans.',
+  },
+  {
+    id: 'pendant-light',
+    label: 'Pendant Light',
+    defaultLumens: 2500,
+    description: 'Useful over tables, collaboration areas, and spaces with higher ceilings.',
+  },
+  {
+    id: 'track-light',
+    label: 'Track Light',
+    defaultLumens: 1800,
+    description: 'Flexible for reception, display, accent, and mixed-use office areas.',
+  },
+  {
+    id: 'mixed',
+    label: 'Mixed Fixtures',
+    defaultLumens: 3000,
+    description: 'Use when combining ceiling fixtures with task and accent lighting.',
   },
 ];
 

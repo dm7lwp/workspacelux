@@ -53,6 +53,10 @@ export interface OfficeLightingInput {
   unit: 'meters' | 'feet';
   targetLux: number;
   ledEfficiency: number;
+  fixtureLumens: number;
+  hoursPerDay: number;
+  daysPerWeek: number;
+  costPerKwh: number;
 }
 
 export interface OfficeLightingResult {
@@ -64,6 +68,15 @@ export interface OfficeLightingResult {
   upperWatts: number;
   fixtureCountLow: number;
   fixtureCountHigh: number;
+  fixtureCount: number;
+  layoutRows: number;
+  layoutCols: number;
+  monthlyKwh: number;
+  monthlyCost: number;
+  annualCost: number;
+  lightingScore: number;
+  brightnessFit: 'Underlit' | 'Comfortable' | 'Bright' | 'Very bright';
+  energyEfficiency: 'Basic' | 'Good' | 'Excellent';
   colorTemp: string;
   cri: string;
 }
@@ -77,8 +90,23 @@ export function calculateOfficeLighting(
   const widthVal = validatePositive(input.width, 'Width');
   const luxVal = validateLux(input.targetLux);
   const effVal = validateEfficiency(input.ledEfficiency);
+  const fixtureVal = validatePositive(input.fixtureLumens, 'Fixture lumens');
+  const hoursVal = validatePositive(input.hoursPerDay, 'Hours per day');
+  const daysVal = validatePositive(input.daysPerWeek, 'Days per week');
+  const costVal = validatePositive(input.costPerKwh, 'Cost per kWh');
 
-  if (!lengthVal.valid || !widthVal.valid || !luxVal.valid || !effVal.valid) {
+  if (
+    !lengthVal.valid ||
+    !widthVal.valid ||
+    !luxVal.valid ||
+    !effVal.valid ||
+    !fixtureVal.valid ||
+    !hoursVal.valid ||
+    !daysVal.valid ||
+    !costVal.valid ||
+    input.hoursPerDay > 24 ||
+    input.daysPerWeek > 7
+  ) {
     return null;
   }
 
@@ -88,6 +116,22 @@ export function calculateOfficeLighting(
   const areaM2 = lengthM * widthM;
   const totalLumens = input.targetLux * areaM2;
   const estimatedWatts = totalLumens / input.ledEfficiency;
+  const fixtureCount = Math.max(1, Math.ceil(totalLumens / input.fixtureLumens));
+  const layoutCols = Math.ceil(Math.sqrt(fixtureCount));
+  const layoutRows = Math.ceil(fixtureCount / layoutCols);
+  const monthlyKwh = (estimatedWatts * input.hoursPerDay * input.daysPerWeek * 4.345) / 1000;
+  const monthlyCost = monthlyKwh * input.costPerKwh;
+  const annualCost = monthlyCost * 12;
+  const brightnessFit =
+    input.targetLux < 350 ? 'Underlit' : input.targetLux < 700 ? 'Comfortable' : input.targetLux < 1000 ? 'Bright' : 'Very bright';
+  const energyEfficiency =
+    input.ledEfficiency >= 130 ? 'Excellent' : input.ledEfficiency >= 100 ? 'Good' : 'Basic';
+  const score = Math.round(
+    55 +
+      Math.min(20, input.ledEfficiency / 7.5) +
+      Math.min(15, input.targetLux / 50) -
+      Math.max(0, fixtureCount - 12) * 1.5,
+  );
 
   return {
     areaM2,
@@ -98,6 +142,15 @@ export function calculateOfficeLighting(
     upperWatts: estimatedWatts * 1.15,
     fixtureCountLow: Math.ceil(totalLumens / 4000),
     fixtureCountHigh: Math.ceil(totalLumens / 3000),
+    fixtureCount,
+    layoutRows,
+    layoutCols,
+    monthlyKwh,
+    monthlyCost,
+    annualCost,
+    lightingScore: Math.max(45, Math.min(96, score)),
+    brightnessFit,
+    energyEfficiency,
     colorTemp,
     cri,
   };
