@@ -57,12 +57,37 @@ export interface OfficeLightingInput {
   hoursPerDay: number;
   daysPerWeek: number;
   costPerKwh: number;
+  utilizationFactor?: number;
+  maintenanceFactor?: number;
+  recommendedLuxMin?: number;
+  recommendedLuxMax?: number;
+  screenHeavy?: boolean;
+}
+
+export interface FixtureOption {
+  label: string;
+  fixtureLumens: number;
+  count: number;
+  bestFor: string;
+}
+
+export interface ScenarioComparison {
+  targetLux: number;
+  effectiveLumens: number;
+  requiredFixtureLumens: number;
+  fixtureCount: number;
+  estimatedWatts: number;
+  monthlyCost: number;
 }
 
 export interface OfficeLightingResult {
   areaM2: number;
   targetLux: number;
   totalLumens: number;
+  effectiveLumens: number;
+  requiredFixtureLumens: number;
+  utilizationFactor: number;
+  maintenanceFactor: number;
   estimatedWatts: number;
   lowerWatts: number;
   upperWatts: number;
@@ -75,8 +100,19 @@ export interface OfficeLightingResult {
   monthlyCost: number;
   annualCost: number;
   lightingScore: number;
+  scoreDetails: {
+    brightnessFit: number;
+    energyEfficiency: number;
+    fixturePracticality: number;
+    comfortRisk: number;
+  };
   brightnessFit: 'Underlit' | 'Comfortable' | 'Bright' | 'Very bright';
   energyEfficiency: 'Basic' | 'Good' | 'Excellent';
+  fixturePracticality: 'Practical' | 'Many fixtures' | 'Uneven risk';
+  comfortRisk: 'Low' | 'Medium' | 'High';
+  estimateConfidence: 'Medium' | 'High';
+  fixtureOptions: FixtureOption[];
+  scenarioComparison: ScenarioComparison[];
   colorTemp: string;
   cri: string;
 }
@@ -94,6 +130,10 @@ export function calculateOfficeLighting(
   const hoursVal = validatePositive(input.hoursPerDay, 'Hours per day');
   const daysVal = validatePositive(input.daysPerWeek, 'Days per week');
   const costVal = validatePositive(input.costPerKwh, 'Cost per kWh');
+  const utilizationFactor = input.utilizationFactor ?? 1;
+  const maintenanceFactor = input.maintenanceFactor ?? 1;
+  const utilizationVal = validatePositive(utilizationFactor, 'Utilization factor');
+  const maintenanceVal = validatePositive(maintenanceFactor, 'Maintenance factor');
 
   if (
     !lengthVal.valid ||
@@ -104,8 +144,12 @@ export function calculateOfficeLighting(
     !hoursVal.valid ||
     !daysVal.valid ||
     !costVal.valid ||
+    !utilizationVal.valid ||
+    !maintenanceVal.valid ||
     input.hoursPerDay > 24 ||
-    input.daysPerWeek > 7
+    input.daysPerWeek > 7 ||
+    utilizationFactor > 1 ||
+    maintenanceFactor > 1
   ) {
     return null;
   }
@@ -114,9 +158,11 @@ export function calculateOfficeLighting(
     input.unit === 'meters' ? input.length : feetToMeters(input.length);
   const widthM = input.unit === 'meters' ? input.width : feetToMeters(input.width);
   const areaM2 = lengthM * widthM;
-  const totalLumens = input.targetLux * areaM2;
-  const estimatedWatts = totalLumens / input.ledEfficiency;
-  const fixtureCount = Math.max(1, Math.ceil(totalLumens / input.fixtureLumens));
+  const effectiveLumens = input.targetLux * areaM2;
+  const lossFactor = utilizationFactor * maintenanceFactor;
+  const requiredFixtureLumens = effectiveLumens / lossFactor;
+  const estimatedWatts = requiredFixtureLumens / input.ledEfficiency;
+  const fixtureCount = Math.max(1, Math.ceil(requiredFixtureLumens / input.fixtureLumens));
   const layoutCols = Math.ceil(Math.sqrt(fixtureCount));
   const layoutRows = Math.ceil(fixtureCount / layoutCols);
   const monthlyKwh = (estimatedWatts * input.hoursPerDay * input.daysPerWeek * 4.345) / 1000;
@@ -126,22 +172,63 @@ export function calculateOfficeLighting(
     input.targetLux < 350 ? 'Underlit' : input.targetLux < 700 ? 'Comfortable' : input.targetLux < 1000 ? 'Bright' : 'Very bright';
   const energyEfficiency =
     input.ledEfficiency >= 130 ? 'Excellent' : input.ledEfficiency >= 100 ? 'Good' : 'Basic';
+  const recommendedLuxMin = input.recommendedLuxMin ?? 300;
+  const recommendedLuxMax = input.recommendedLuxMax ?? 750;
+  const brightnessScore =
+    input.targetLux >= recommendedLuxMin && input.targetLux <= recommendedLuxMax
+      ? 95
+      : Math.max(40, 95 - (Math.min(Math.abs(input.targetLux - recommendedLuxMin), Math.abs(input.targetLux - recommendedLuxMax)) / 10));
+  const efficiencyScore =
+    input.ledEfficiency >= 130 ? 95 : input.ledEfficiency >= 100 ? 82 : input.ledEfficiency >= 80 ? 65 : 45;
+  const fixturePracticalityScore =
+    fixtureCount >= 2 && fixtureCount <= 8 ? 92 : fixtureCount <= 15 ? 75 : fixtureCount === 1 && areaM2 > 16 ? 62 : 55;
+  const comfortRiskScore =
+    input.targetLux > 750 || input.screenHeavy ? (input.targetLux > 1000 ? 45 : 70) : 92;
   const score = Math.round(
-    55 +
-      Math.min(20, input.ledEfficiency / 7.5) +
-      Math.min(15, input.targetLux / 50) -
-      Math.max(0, fixtureCount - 12) * 1.5,
+    brightnessScore * 0.35 +
+      efficiencyScore * 0.25 +
+      fixturePracticalityScore * 0.2 +
+      comfortRiskScore * 0.2,
   );
+  const fixturePracticality =
+    fixtureCount === 1 && areaM2 > 16 ? 'Uneven risk' : fixtureCount > 12 ? 'Many fixtures' : 'Practical';
+  const comfortRisk = input.targetLux > 1000 ? 'High' : input.targetLux > 750 || input.screenHeavy ? 'Medium' : 'Low';
+  const fixtureOptions = [
+    { label: 'LED panels', fixtureLumens: 4000, bestFor: 'even ceiling lighting' },
+    { label: 'Downlights', fixtureLumens: 3000, bestFor: 'flexible smaller-fixture layouts' },
+    { label: 'Linear fixtures', fixtureLumens: 6000, bestFor: 'open offices or long rooms' },
+  ].map((option) => ({
+    ...option,
+    count: Math.max(1, Math.ceil(requiredFixtureLumens / option.fixtureLumens)),
+  }));
+  const scenarioComparison = [300, 500, 750].map((targetLux) => {
+    const scenarioEffectiveLumens = targetLux * areaM2;
+    const scenarioFixtureLumens = scenarioEffectiveLumens / lossFactor;
+    const scenarioWatts = scenarioFixtureLumens / input.ledEfficiency;
+
+    return {
+      targetLux,
+      effectiveLumens: scenarioEffectiveLumens,
+      requiredFixtureLumens: scenarioFixtureLumens,
+      fixtureCount: Math.max(1, Math.ceil(scenarioFixtureLumens / input.fixtureLumens)),
+      estimatedWatts: scenarioWatts,
+      monthlyCost: ((scenarioWatts * input.hoursPerDay * input.daysPerWeek * 4.345) / 1000) * input.costPerKwh,
+    };
+  });
 
   return {
     areaM2,
     targetLux: input.targetLux,
-    totalLumens,
+    totalLumens: requiredFixtureLumens,
+    effectiveLumens,
+    requiredFixtureLumens,
+    utilizationFactor,
+    maintenanceFactor,
     estimatedWatts,
     lowerWatts: estimatedWatts * 0.85,
     upperWatts: estimatedWatts * 1.15,
-    fixtureCountLow: Math.ceil(totalLumens / 4000),
-    fixtureCountHigh: Math.ceil(totalLumens / 3000),
+    fixtureCountLow: Math.ceil(requiredFixtureLumens / 4000),
+    fixtureCountHigh: Math.ceil(requiredFixtureLumens / 3000),
     fixtureCount,
     layoutRows,
     layoutCols,
@@ -149,8 +236,19 @@ export function calculateOfficeLighting(
     monthlyCost,
     annualCost,
     lightingScore: Math.max(45, Math.min(96, score)),
+    scoreDetails: {
+      brightnessFit: Math.round(brightnessScore),
+      energyEfficiency: efficiencyScore,
+      fixturePracticality: fixturePracticalityScore,
+      comfortRisk: comfortRiskScore,
+    },
     brightnessFit,
     energyEfficiency,
+    fixturePracticality,
+    comfortRisk,
+    estimateConfidence: lossFactor < 1 ? 'High' : 'Medium',
+    fixtureOptions,
+    scenarioComparison,
     colorTemp,
     cri,
   };

@@ -2,6 +2,7 @@ export interface WorkspaceType {
   id: string;
   label: string;
   defaultLux: number;
+  luxRange: [number, number];
   colorTemp: string;
   cri: string;
   lightingMix: LightingMix;
@@ -18,6 +19,7 @@ export const workspaceTypes: WorkspaceType[] = [
     id: 'general-office',
     label: 'General Office',
     defaultLux: 500,
+    luxRange: [300, 500],
     colorTemp: '4000K',
     cri: '80+',
     lightingMix: { ambient: 80, task: 15, accent: 5 },
@@ -26,6 +28,7 @@ export const workspaceTypes: WorkspaceType[] = [
     id: 'open-office',
     label: 'Open Office',
     defaultLux: 500,
+    luxRange: [300, 500],
     colorTemp: '4000K',
     cri: '80+',
     lightingMix: { ambient: 80, task: 15, accent: 5 },
@@ -34,6 +37,7 @@ export const workspaceTypes: WorkspaceType[] = [
     id: 'meeting-room',
     label: 'Meeting Room',
     defaultLux: 300,
+    luxRange: [300, 500],
     colorTemp: '3500K–4000K',
     cri: '80+',
     lightingMix: { ambient: 70, task: 10, accent: 20 },
@@ -42,6 +46,7 @@ export const workspaceTypes: WorkspaceType[] = [
     id: 'home-office',
     label: 'Home Office',
     defaultLux: 500,
+    luxRange: [300, 500],
     colorTemp: '3000K–4000K',
     cri: '80+',
     lightingMix: { ambient: 65, task: 30, accent: 5 },
@@ -50,6 +55,7 @@ export const workspaceTypes: WorkspaceType[] = [
     id: 'reception',
     label: 'Reception Area',
     defaultLux: 300,
+    luxRange: [200, 300],
     colorTemp: '3000K–3500K',
     cri: '80+',
     lightingMix: { ambient: 50, task: 10, accent: 40 },
@@ -58,6 +64,7 @@ export const workspaceTypes: WorkspaceType[] = [
     id: 'conference-room',
     label: 'Conference Room',
     defaultLux: 500,
+    luxRange: [300, 500],
     colorTemp: '4000K',
     cri: '80+',
     lightingMix: { ambient: 70, task: 10, accent: 20 },
@@ -66,6 +73,7 @@ export const workspaceTypes: WorkspaceType[] = [
     id: 'design-studio',
     label: 'Design Studio',
     defaultLux: 750,
+    luxRange: [750, 1000],
     colorTemp: '4000K–5000K',
     cri: '90+',
     lightingMix: { ambient: 65, task: 25, accent: 10 },
@@ -74,6 +82,7 @@ export const workspaceTypes: WorkspaceType[] = [
     id: 'coworking',
     label: 'Coworking Space',
     defaultLux: 500,
+    luxRange: [300, 500],
     colorTemp: '3500K–4000K',
     cri: '80+',
     lightingMix: { ambient: 75, task: 20, accent: 5 },
@@ -145,6 +154,8 @@ export interface TaskType {
   label: string;
   luxMin: number;
   luxMax: number;
+  recommendedLux: number;
+  warning?: string;
   colorTemp: string;
   lampType: string;
 }
@@ -155,6 +166,8 @@ export const taskTypes: TaskType[] = [
     label: 'Computer Work',
     luxMin: 300,
     luxMax: 500,
+    recommendedLux: 400,
+    warning: 'Use diffused fixtures and avoid placing bright sources directly above screens.',
     colorTemp: '4000K',
     lampType: 'Monitor light bar or adjustable desk lamp',
   },
@@ -163,6 +176,7 @@ export const taskTypes: TaskType[] = [
     label: 'Reading',
     luxMin: 500,
     luxMax: 500,
+    recommendedLux: 500,
     colorTemp: '3500K–4000K',
     lampType: 'Dimmable LED desk lamp',
   },
@@ -171,6 +185,7 @@ export const taskTypes: TaskType[] = [
     label: 'Writing',
     luxMin: 500,
     luxMax: 500,
+    recommendedLux: 500,
     colorTemp: '4000K',
     lampType: 'Adjustable task lamp with diffuser',
   },
@@ -179,6 +194,7 @@ export const taskTypes: TaskType[] = [
     label: 'Drawing / Design',
     luxMin: 750,
     luxMax: 750,
+    recommendedLux: 750,
     colorTemp: '4000K–5000K',
     lampType: 'High-CRI adjustable lamp',
   },
@@ -187,6 +203,7 @@ export const taskTypes: TaskType[] = [
     label: 'Crafting',
     luxMin: 750,
     luxMax: 1000,
+    recommendedLux: 750,
     colorTemp: '4000K–5000K',
     lampType: 'Bright task lamp with wide beam',
   },
@@ -195,6 +212,8 @@ export const taskTypes: TaskType[] = [
     label: 'Video Calls',
     luxMin: 300,
     luxMax: 500,
+    recommendedLux: 500,
+    warning: 'Use soft front-facing light and avoid strong overhead glare on faces or screens.',
     colorTemp: '4000K–5000K',
     lampType: 'Soft key light or monitor bar',
   },
@@ -203,9 +222,91 @@ export const taskTypes: TaskType[] = [
     label: 'Gaming Setup',
     luxMin: 200,
     luxMax: 400,
+    recommendedLux: 300,
     colorTemp: '4000K',
     lampType: 'Bias lighting or dim desk lamp',
   },
+];
+
+export const officeTaskTypes: TaskType[] = [
+  {
+    id: 'general-office-work',
+    label: 'General office work',
+    luxMin: 300,
+    luxMax: 500,
+    recommendedLux: 500,
+    colorTemp: '4000K',
+    lampType: 'Diffused ceiling fixtures with optional task lighting',
+  },
+  {
+    id: 'computer-work',
+    label: 'Computer work',
+    luxMin: 300,
+    luxMax: 500,
+    recommendedLux: 400,
+    warning: 'Use low-glare fixtures and keep direct light off monitor surfaces.',
+    colorTemp: '4000K',
+    lampType: 'Diffused panels or indirect linear fixtures',
+  },
+  {
+    id: 'reading-writing',
+    label: 'Reading and writing',
+    luxMin: 500,
+    luxMax: 500,
+    recommendedLux: 500,
+    colorTemp: '4000K',
+    lampType: 'Even ambient light plus desk-level task lighting',
+  },
+  {
+    id: 'detailed-paperwork',
+    label: 'Detailed paperwork',
+    luxMin: 750,
+    luxMax: 750,
+    recommendedLux: 750,
+    colorTemp: '4000K-5000K',
+    lampType: 'Higher-output fixtures with task lighting at workstations',
+  },
+  {
+    id: 'technical-drawing',
+    label: 'Technical drawing',
+    luxMin: 750,
+    luxMax: 1000,
+    recommendedLux: 750,
+    colorTemp: '4000K-5000K',
+    lampType: 'High-CRI linear or panel fixtures',
+  },
+  {
+    id: 'meetings',
+    label: 'Meetings',
+    luxMin: 300,
+    luxMax: 500,
+    recommendedLux: 300,
+    colorTemp: '3500K-4000K',
+    lampType: 'Dimmable ambient lighting with presentation control',
+  },
+  {
+    id: 'video-calls',
+    label: 'Video calls',
+    luxMin: 300,
+    luxMax: 500,
+    recommendedLux: 500,
+    warning: 'Add soft front-facing light and avoid harsh downlight shadows.',
+    colorTemp: '4000K-5000K',
+    lampType: 'Soft key lighting plus controlled ceiling light',
+  },
+];
+
+export const utilizationFactorPresets = [
+  { value: 0.5, label: '0.50 - conservative room or higher losses' },
+  { value: 0.6, label: '0.60 - typical office estimate' },
+  { value: 0.7, label: '0.70 - efficient layout and brighter surfaces' },
+  { value: 0.8, label: '0.80 - optimized design estimate' },
+];
+
+export const maintenanceFactorPresets = [
+  { value: 0.7, label: '0.70 - dusty or longer maintenance cycle' },
+  { value: 0.8, label: '0.80 - typical maintained office lighting' },
+  { value: 0.9, label: '0.90 - clean space and frequent maintenance' },
 ];
 
 export interface ColorTempSpace {
