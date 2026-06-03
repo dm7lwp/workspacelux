@@ -1,8 +1,6 @@
 import { useState } from 'react';
 import { colorTempSpaces, colorTempScale } from '../../data/lightingPresets';
-
-const labelClass = 'block text-sm font-medium text-main mb-1.5';
-const inputClass = 'w-full h-11 px-4 rounded-xl border border-border bg-white text-main focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600';
+import { SelectField } from './CalculatorPrimitives';
 
 export default function ColorTemperatureSelector() {
   const [spaceId, setSpaceId] = useState('corporate-office');
@@ -12,10 +10,9 @@ export default function ColorTemperatureSelector() {
     <div className="grid lg:grid-cols-2 gap-6">
       <div className="card p-6 space-y-5">
         <h2 className="text-xl font-semibold text-main">Choose your space</h2>
-        <div><label htmlFor="space-type" className={labelClass}>Space type</label>
-          <select id="space-type" value={spaceId} onChange={(e) => setSpaceId(e.target.value)} className={inputClass}>
-            {colorTempSpaces.map((s) => <option key={s.id} value={s.id}>{s.label}</option>)}
-          </select></div>
+        <SelectField id="space-type" label="Space type" value={spaceId} onChange={(e) => setSpaceId(e.target.value)}>
+          {colorTempSpaces.map((s) => <option key={s.id} value={s.id}>{s.label}</option>)}
+        </SelectField>
       </div>
       <div className="card p-6 bg-slate-50/80 space-y-4">
         <h2 className="text-xl font-semibold text-main">Recommendation</h2>

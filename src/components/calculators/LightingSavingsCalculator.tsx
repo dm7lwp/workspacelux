@@ -1,10 +1,7 @@
 import { useMemo, useState } from 'react';
 import { calculateLightingSavings } from '../../lib/calculators';
 import { formatCurrency, formatKwh, formatNumber } from '../../lib/formatters';
-
-const labelClass = 'block text-sm font-medium text-main mb-1.5';
-const inputClass =
-  'w-full h-11 px-4 rounded-xl border border-border bg-white text-main focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600';
+import { NumberField, ResultStat } from './CalculatorPrimitives';
 
 const oldPresets = [
   { label: 'Fluorescent troffer (2×4 T8)', watts: 72 },
@@ -46,31 +43,15 @@ export default function LightingSavingsCalculator() {
       <div className="card p-6 space-y-5">
         <h2 className="text-xl font-semibold text-main">Calculator</h2>
 
-        <div>
-          <label htmlFor="fixture-count" className={labelClass}>
-            Number of fixtures
-          </label>
-          <input
-            id="fixture-count"
-            type="number"
-            min="1"
-            value={fixtureCount}
-            onChange={(e) => setFixtureCount(e.target.value)}
-            className={inputClass}
-          />
-        </div>
+        <NumberField id="fixture-count" label="Number of fixtures" min="1" value={fixtureCount} onChange={(e) => setFixtureCount(e.target.value)} />
 
         <div>
-          <label htmlFor="old-watts" className={labelClass}>
-            Old wattage per fixture (W)
-          </label>
-          <input
+          <NumberField
             id="old-watts"
-            type="number"
+            label="Old wattage per fixture (W)"
             min="1"
             value={oldWatts}
             onChange={(e) => setOldWatts(e.target.value)}
-            className={inputClass}
           />
           <div className="flex flex-wrap gap-2 mt-2">
             {oldPresets.map((p) => (
@@ -87,16 +68,12 @@ export default function LightingSavingsCalculator() {
         </div>
 
         <div>
-          <label htmlFor="new-watts" className={labelClass}>
-            New LED wattage per fixture (W)
-          </label>
-          <input
+          <NumberField
             id="new-watts"
-            type="number"
+            label="New LED wattage per fixture (W)"
             min="1"
             value={newWatts}
             onChange={(e) => setNewWatts(e.target.value)}
-            className={inputClass}
           />
           <div className="flex flex-wrap gap-2 mt-2">
             {newPresets.map((p) => (
@@ -113,51 +90,11 @@ export default function LightingSavingsCalculator() {
         </div>
 
         <div className="grid grid-cols-2 gap-4">
-          <div>
-            <label htmlFor="hours-day" className={labelClass}>
-              Hours per day
-            </label>
-            <input
-              id="hours-day"
-              type="number"
-              min="0.1"
-              max="24"
-              step="0.5"
-              value={hoursPerDay}
-              onChange={(e) => setHoursPerDay(e.target.value)}
-              className={inputClass}
-            />
-          </div>
-          <div>
-            <label htmlFor="days-year" className={labelClass}>
-              Days per year
-            </label>
-            <input
-              id="days-year"
-              type="number"
-              min="1"
-              max="365"
-              value={daysPerYear}
-              onChange={(e) => setDaysPerYear(e.target.value)}
-              className={inputClass}
-            />
-          </div>
+          <NumberField id="hours-day" label="Hours per day" min="0.1" max="24" step="0.5" value={hoursPerDay} onChange={(e) => setHoursPerDay(e.target.value)} />
+          <NumberField id="days-year" label="Days per year" min="1" max="365" value={daysPerYear} onChange={(e) => setDaysPerYear(e.target.value)} />
         </div>
 
-        <div>
-          <label htmlFor="cost-kwh" className={labelClass}>
-            Electricity cost ($/kWh)
-          </label>
-          <input
-            id="cost-kwh"
-            type="number"
-            min="0.01"
-            step="0.01"
-            value={costPerKwh}
-            onChange={(e) => setCostPerKwh(e.target.value)}
-            className={inputClass}
-          />
-        </div>
+        <NumberField id="cost-kwh" label="Electricity cost ($/kWh)" min="0.01" step="0.01" value={costPerKwh} onChange={(e) => setCostPerKwh(e.target.value)} />
       </div>
 
       <div className="card p-6 bg-slate-50/80">
@@ -166,24 +103,10 @@ export default function LightingSavingsCalculator() {
         {result ? (
           <div className="space-y-4">
             <div className="grid grid-cols-2 gap-4 text-sm">
-              <div>
-                <p className="text-muted">Power reduction</p>
-                <p className="font-semibold text-main text-lg">
-                  {formatNumber(result.percentSaved, 0)}% ({formatNumber(result.wattsSaved, 0)} W)
-                </p>
-              </div>
-              <div>
-                <p className="text-muted">Annual energy saved</p>
-                <p className="font-semibold text-main text-lg">{formatKwh(result.annualKwhSaved)}</p>
-              </div>
-              <div>
-                <p className="text-muted">Old annual cost</p>
-                <p className="font-semibold text-main">{formatCurrency(result.annualCostOld)}</p>
-              </div>
-              <div>
-                <p className="text-muted">New annual cost</p>
-                <p className="font-semibold text-main">{formatCurrency(result.annualCostNew)}</p>
-              </div>
+              <ResultStat label="Power reduction" value={`${formatNumber(result.percentSaved, 0)}% (${formatNumber(result.wattsSaved, 0)} W)`} />
+              <ResultStat label="Annual energy saved" value={formatKwh(result.annualKwhSaved)} />
+              <ResultStat label="Old annual cost" value={formatCurrency(result.annualCostOld)} valueClassName="text-base" />
+              <ResultStat label="New annual cost" value={formatCurrency(result.annualCostNew)} valueClassName="text-base" />
             </div>
 
             <div className="p-4 rounded-xl bg-white border border-border">
