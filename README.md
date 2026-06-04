@@ -12,7 +12,7 @@ A fast, SEO-friendly workspace lighting calculator site built with Astro and dep
 - Office lighting standards guide + 2 blog articles
 - SEO-optimized pages with FAQ schema, sitemap, and structured data
 - Static-first architecture — all calculations run in the browser
-- AdSense-ready `AdSlot` component (placeholder until approval)
+- AdSense-ready script and `AdSlot` component, gated by an environment variable
 
 ## Tech Stack
 
@@ -57,7 +57,7 @@ public/
 
 | Variable                     | Purpose                          |
 | ---------------------------- | -------------------------------- |
-| `PUBLIC_ADSENSE_CLIENT_ID`   | Set to `enabled` to show ad slots |
+| `PUBLIC_ADSENSE_CLIENT_ID`   | Set to `enabled` to load AdSense and show ad slots |
 
 ## Post-Launch Checklist
 

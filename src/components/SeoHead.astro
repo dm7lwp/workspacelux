@@ -12,6 +12,8 @@ interface Props {
 const { title, description, path = '', ogType = 'website', schema } = Astro.props;
 const canonical = `${SITE.url}${path}`;
 const fullTitle = path === '/' || path === '' ? title : `${title} | ${SITE.name}`;
+const adsenseEnabled = import.meta.env.PUBLIC_ADSENSE_CLIENT_ID === 'enabled';
+const adsenseClientId = 'ca-pub-1962622798353654';
 ---
 
 <meta charset="UTF-8" />
@@ -34,11 +36,15 @@ const fullTitle = path === '/' || path === '' ? title : `${title} | ${SITE.name}
   href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
   rel="stylesheet"
 />
-<script
-  async
-  src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1962622798353654"
-  crossorigin="anonymous"
-></script>
+{
+  adsenseEnabled && (
+    <script
+      async
+      src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${adsenseClientId}`}
+      crossorigin="anonymous"
+    />
+  )
+}
 {
   schema && (
     <script type="application/ld+json" set:html={JSON.stringify(schema)} />

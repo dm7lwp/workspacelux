@@ -5,11 +5,11 @@ interface Props {
 }
 
 const { slot = 'inline', label = 'Advertisement' } = Astro.props;
-const showPlaceholder = import.meta.env.PUBLIC_ADSENSE_CLIENT_ID !== 'enabled';
+const adsenseEnabled = import.meta.env.PUBLIC_ADSENSE_CLIENT_ID === 'enabled';
 ---
 
 {
-  showPlaceholder ? null : (
+  adsenseEnabled && (
     <aside
       class:list={[
         'rounded-card border border-dashed border-border bg-slate-50/50',
