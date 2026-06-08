@@ -28,12 +28,15 @@ function FieldShell({ children, htmlFor, label }: FieldShellProps) {
 interface NumberFieldProps extends InputHTMLAttributes<HTMLInputElement> {
   id: string;
   label: string;
+  error?: string;
 }
 
-export function NumberField({ className = calculatorInputClass, id, label, type = 'number', ...props }: NumberFieldProps) {
+export function NumberField({ className = calculatorInputClass, id, label, type = 'number', error, ...props }: NumberFieldProps) {
+  const errorClass = error ? 'border-red-500 focus:ring-red-500/20 focus:border-red-500' : '';
   return (
     <FieldShell htmlFor={id} label={label}>
-      <input id={id} type={type} className={className} {...props} />
+      <input id={id} type={type} className={`${className} ${errorClass}`.trim()} {...props} />
+      {error && <p className="text-red-500 text-xs mt-1">{error}</p>}
     </FieldShell>
   );
 }

@@ -79,6 +79,8 @@ export default function OfficeLightingCalculator() {
           recommendedLuxMin: selectedWorkspace.luxRange[0],
           recommendedLuxMax: Math.max(selectedWorkspace.luxRange[1], selectedTask.luxMax),
           screenHeavy: selectedTask.id === 'computer-work' || selectedTask.id === 'video-calls',
+          ceilingHeight: parseFloat(ceilingHeight),
+          isAdvancedMode: mode === 'advanced',
         },
         selectedTask.colorTemp || selectedWorkspace.colorTemp,
         selectedWorkspace.cri,
@@ -97,8 +99,29 @@ export default function OfficeLightingCalculator() {
       maintenanceFactor,
       selectedWorkspace,
       selectedTask,
+      ceilingHeight,
+      mode,
     ],
   );
+
+  const errors = useMemo(() => {
+    const errs: Record<string, string> = {};
+    const lengthNum = parseFloat(length);
+    const widthNum = parseFloat(width);
+    const ceilingNum = parseFloat(ceilingHeight);
+    const hoursNum = parseFloat(hoursPerDay);
+    const daysNum = parseFloat(daysPerWeek);
+    const costNum = parseFloat(costPerKwh);
+
+    if (isNaN(lengthNum) || lengthNum <= 0) errs.length = 'Length must be greater than 0';
+    if (isNaN(widthNum) || widthNum <= 0) errs.width = 'Width must be greater than 0';
+    if (isNaN(ceilingNum) || ceilingNum <= 0) errs.ceilingHeight = 'Ceiling height must be greater than 0';
+    if (isNaN(hoursNum) || hoursNum <= 0 || hoursNum > 24) errs.hoursPerDay = 'Hours per day must be between 0.1 and 24';
+    if (isNaN(daysNum) || daysNum < 1 || daysNum > 7) errs.daysPerWeek = 'Days per week must be between 1 and 7';
+    if (isNaN(costNum) || costNum <= 0) errs.costPerKwh = 'Electricity price must be greater than 0';
+    if (mode === 'advanced' && (isNaN(fixtureLumens) || fixtureLumens <= 0)) errs.fixtureLumens = 'Lumens per fixture must be greater than 0';
+    return errs;
+  }, [length, width, ceilingHeight, hoursPerDay, daysPerWeek, costPerKwh, fixtureLumens, mode]);
 
   const contractorNotes = result
     ? `Please design lighting for approximately ${formatLux(result.targetLux)} maintained illuminance over the work area. Estimated effective work-plane demand is ${formatLumens(result.effectiveLumens)}, with about ${formatLumens(result.requiredFixtureLumens)} total fixture output after utilization and maintenance assumptions. Use ${result.fixtureCount} ${fixtureCountLabel} at roughly ${formatLumens(fixtureLumens)} each, around ${result.colorTemp}, with good diffusion and glare control for ${selectedTask.label.toLowerCase()}.`
@@ -179,24 +202,27 @@ export default function OfficeLightingCalculator() {
                 </select>
               </div>
               <div>
-                <label htmlFor="room-length" className={labelClass}>Room length</label>
-                <input id="room-length" type="number" min="0.1" step="0.1" value={length} onChange={(e) => setLength(e.target.value)} className={inputClass} />
-              </div>
-              <div>
-                <label htmlFor="room-width" className={labelClass}>Room width</label>
-                <input id="room-width" type="number" min="0.1" step="0.1" value={width} onChange={(e) => setWidth(e.target.value)} className={inputClass} />
-              </div>
-              <div>
-                <label htmlFor="unit" className={labelClass}>Unit</label>
-                <select id="unit" value={unit} onChange={(e) => setUnit(e.target.value as 'meters' | 'feet')} className={inputClass}>
-                  <option value="meters">Meters</option>
-                  <option value="feet">Feet</option>
-                </select>
-              </div>
-              <div>
-                <label htmlFor="ceiling-height" className={labelClass}>Ceiling height</label>
-                <input id="ceiling-height" type="number" min="1.8" step="0.1" value={ceilingHeight} onChange={(e) => setCeilingHeight(e.target.value)} className={inputClass} />
-              </div>
+                 <label htmlFor="room-length" className={labelClass}>Room length ({unit === 'meters' ? 'm' : 'ft'})</label>
+                 <input id="room-length" type="number" min="0.1" step="0.1" value={length} onChange={(e) => setLength(e.target.value)} className={`${inputClass} ${errors.length ? 'border-red-500 focus:ring-red-500/20 focus:border-red-500' : ''}`} />
+                 {errors.length && <p className="text-red-500 text-xs mt-1">{errors.length}</p>}
+               </div>
+               <div>
+                 <label htmlFor="room-width" className={labelClass}>Room width ({unit === 'meters' ? 'm' : 'ft'})</label>
+                 <input id="room-width" type="number" min="0.1" step="0.1" value={width} onChange={(e) => setWidth(e.target.value)} className={`${inputClass} ${errors.width ? 'border-red-500 focus:ring-red-500/20 focus:border-red-500' : ''}`} />
+                 {errors.width && <p className="text-red-500 text-xs mt-1">{errors.width}</p>}
+               </div>
+               <div>
+                 <label htmlFor="unit" className={labelClass}>Unit</label>
+                 <select id="unit" value={unit} onChange={(e) => setUnit(e.target.value as 'meters' | 'feet')} className={inputClass}>
+                   <option value="meters">Meters (m)</option>
+                   <option value="feet">Feet (ft)</option>
+                 </select>
+               </div>
+               <div>
+                 <label htmlFor="ceiling-height" className={labelClass}>Ceiling height ({unit === 'meters' ? 'm' : 'ft'})</label>
+                 <input id="ceiling-height" type="number" min="0.1" step="0.1" value={ceilingHeight} onChange={(e) => setCeilingHeight(e.target.value)} className={`${inputClass} ${errors.ceilingHeight ? 'border-red-500 focus:ring-red-500/20 focus:border-red-500' : ''}`} />
+                 {errors.ceilingHeight && <p className="text-red-500 text-xs mt-1">{errors.ceilingHeight}</p>}
+               </div>
             </div>
             <p className="mt-3 text-sm text-muted">
               Recommended target: {formatLux(getRecommendedLux(workspaceType, taskType))}. {selectedTask.warning ?? selectedFixture.description}
@@ -216,17 +242,20 @@ export default function OfficeLightingCalculator() {
                 </select>
               </div>
               <div>
-                <label htmlFor="hours-per-day" className={labelClass}>Usage hours/day</label>
-                <input id="hours-per-day" type="number" min="0.1" max="24" step="0.5" value={hoursPerDay} onChange={(e) => setHoursPerDay(e.target.value)} className={inputClass} />
-              </div>
-              <div>
-                <label htmlFor="days-per-week" className={labelClass}>Days/week</label>
-                <input id="days-per-week" type="number" min="1" max="7" step="1" value={daysPerWeek} onChange={(e) => setDaysPerWeek(e.target.value)} className={inputClass} />
-              </div>
-              <div>
-                <label htmlFor="cost-per-kwh" className={labelClass}>Electricity price</label>
-                <input id="cost-per-kwh" type="number" min="0.01" step="0.01" value={costPerKwh} onChange={(e) => setCostPerKwh(e.target.value)} className={inputClass} />
-              </div>
+                 <label htmlFor="hours-per-day" className={labelClass}>Usage hours/day</label>
+                 <input id="hours-per-day" type="number" min="0.1" max="24" step="0.5" value={hoursPerDay} onChange={(e) => setHoursPerDay(e.target.value)} className={`${inputClass} ${errors.hoursPerDay ? 'border-red-500 focus:ring-red-500/20 focus:border-red-500' : ''}`} />
+                 {errors.hoursPerDay && <p className="text-red-500 text-xs mt-1">{errors.hoursPerDay}</p>}
+               </div>
+               <div>
+                 <label htmlFor="days-per-week" className={labelClass}>Days/week</label>
+                 <input id="days-per-week" type="number" min="1" max="7" step="1" value={daysPerWeek} onChange={(e) => setDaysPerWeek(e.target.value)} className={`${inputClass} ${errors.daysPerWeek ? 'border-red-500 focus:ring-red-500/20 focus:border-red-500' : ''}`} />
+                 {errors.daysPerWeek && <p className="text-red-500 text-xs mt-1">{errors.daysPerWeek}</p>}
+               </div>
+               <div>
+                 <label htmlFor="cost-per-kwh" className={labelClass}>Electricity price ($/kWh)</label>
+                 <input id="cost-per-kwh" type="number" min="0.01" step="0.01" value={costPerKwh} onChange={(e) => setCostPerKwh(e.target.value)} className={`${inputClass} ${errors.costPerKwh ? 'border-red-500 focus:ring-red-500/20 focus:border-red-500' : ''}`} />
+                 {errors.costPerKwh && <p className="text-red-500 text-xs mt-1">{errors.costPerKwh}</p>}
+               </div>
             </div>
           </div>
 
@@ -244,8 +273,9 @@ export default function OfficeLightingCalculator() {
                   </select>
                 </div>
                 <div>
-                  <label htmlFor="fixture-lumens" className={labelClass}>Lumens per fixture</label>
-                  <input id="fixture-lumens" type="number" min="100" step="100" value={fixtureLumens} onChange={(e) => setFixtureLumens(Number(e.target.value))} className={inputClass} />
+                   <label htmlFor="fixture-lumens" className={labelClass}>Lumens per fixture</label>
+                   <input id="fixture-lumens" type="number" min="100" step="100" value={fixtureLumens || ''} onChange={(e) => setFixtureLumens(Number(e.target.value))} className={`${inputClass} ${errors.fixtureLumens ? 'border-red-500 focus:ring-red-500/20 focus:border-red-500' : ''}`} />
+                   {errors.fixtureLumens && <p className="text-red-500 text-xs mt-1">{errors.fixtureLumens}</p>}
                 </div>
                 <div>
                   <label htmlFor="led-efficiency" className={labelClass}>LED efficacy</label>
@@ -287,7 +317,7 @@ export default function OfficeLightingCalculator() {
           {result ? (
             <div className="space-y-5">
               <div className="grid sm:grid-cols-2 gap-3">
-                <ResultMetric label="Room area" value={formatArea(result.areaM2)} />
+                <ResultMetric label="Room area" value={formatArea(result.areaM2, unit)} />
                 <ResultMetric label="Target brightness" value={formatLux(result.targetLux)} />
                 <ResultMetric label="Work-plane demand" value={formatLumens(result.effectiveLumens)} />
                 <ResultMetric label="Fixture output needed" value={formatLumens(result.requiredFixtureLumens)} />
@@ -298,7 +328,7 @@ export default function OfficeLightingCalculator() {
               <div className="rounded-lg bg-white border border-border p-4">
                 <h3 className="text-base font-semibold text-main mb-2">Plan summary</h3>
                 <p className="text-main leading-relaxed">
-                  For a {formatArea(result.areaM2)} {selectedWorkspace.label.toLowerCase()}, target {formatLux(result.targetLux)} for {selectedTask.label.toLowerCase()}.
+                  For a {formatArea(result.areaM2, unit)} {selectedWorkspace.label.toLowerCase()}, target {formatLux(result.targetLux)} for {selectedTask.label.toLowerCase()}.
                   Plan for about {formatLumens(result.requiredFixtureLumens)} of fixture output after UF {result.utilizationFactor} and MF {result.maintenanceFactor}, using {result.fixtureCount} {fixtureCountLabel}.
                 </p>
               </div>
@@ -401,7 +431,11 @@ export default function OfficeLightingCalculator() {
               </p>
             </div>
           ) : (
-            <p className="text-muted">Enter valid room dimensions, fixture output, and energy values to generate a lighting plan.</p>
+             <p className="text-muted">
+                 {Object.keys(errors).length > 0
+                   ? "Please correct the input errors on the left to generate a lighting plan."
+                   : "Enter valid room dimensions, fixture output, and energy values to generate a lighting plan."}
+             </p>
           )}
         </div>
       </div>

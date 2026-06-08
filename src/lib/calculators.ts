@@ -62,6 +62,8 @@ export interface OfficeLightingInput {
   recommendedLuxMin?: number;
   recommendedLuxMax?: number;
   screenHeavy?: boolean;
+  ceilingHeight: number;
+  isAdvancedMode?: boolean;
 }
 
 export interface FixtureOption {
@@ -124,20 +126,34 @@ export function calculateOfficeLighting(
 ): OfficeLightingResult | null {
   const lengthVal = validatePositive(input.length, 'Length');
   const widthVal = validatePositive(input.width, 'Width');
+  const ceilingVal = validatePositive(input.ceilingHeight, 'Ceiling height');
   const luxVal = validateLux(input.targetLux);
   const effVal = validateEfficiency(input.ledEfficiency);
   const fixtureVal = validatePositive(input.fixtureLumens, 'Fixture lumens');
   const hoursVal = validatePositive(input.hoursPerDay, 'Hours per day');
   const daysVal = validatePositive(input.daysPerWeek, 'Days per week');
   const costVal = validatePositive(input.costPerKwh, 'Cost per kWh');
-  const utilizationFactor = input.utilizationFactor ?? 1;
-  const maintenanceFactor = input.maintenanceFactor ?? 1;
+
+  // Estimate Utilization Factor dynamically in basic mode using RCR (Room Cavity Ratio)
+  let utilizationFactor = input.utilizationFactor ?? 0.6;
+  if (!input.isAdvancedMode) {
+    const workplaneHeight = input.unit === 'meters' ? 0.75 : 2.5;
+    const hCavity = Math.max(0.5, input.ceilingHeight - workplaneHeight);
+    // RCR = 5 * hCavity * (L + W) / (L * W)
+    const rcr = (5 * hCavity * (input.length + input.width)) / (input.length * input.width);
+    // UF = 0.78 - 0.05 * RCR, clamped between 0.35 and 0.75
+    utilizationFactor = Math.max(0.35, Math.min(0.75, 0.78 - 0.05 * rcr));
+  }
+
+  const maintenanceFactor = input.maintenanceFactor ?? 0.8;
+
   const utilizationVal = validatePositive(utilizationFactor, 'Utilization factor');
   const maintenanceVal = validatePositive(maintenanceFactor, 'Maintenance factor');
 
   if (
     !lengthVal.valid ||
     !widthVal.valid ||
+    !ceilingVal.valid ||
     !luxVal.valid ||
     !effVal.valid ||
     !fixtureVal.valid ||
@@ -260,6 +276,7 @@ export interface DeskLightingInput {
   unit: 'cm' | 'inches';
   luxMin: number;
   luxMax: number;
+  ambientLux?: number;
 }
 
 export interface DeskLightingResult {
@@ -286,8 +303,12 @@ export function calculateDeskLighting(input: DeskLightingInput): DeskLightingRes
     input.unit === 'cm' ? cmToMeters(input.depth) : inchesToMeters(input.depth);
   const areaM2 = widthM * depthM;
 
-  const lumensMin = input.luxMin * areaM2;
-  const lumensMax = input.luxMax * areaM2;
+  const ambient = input.ambientLux || 0;
+  const netLuxMin = Math.max(0, input.luxMin - ambient);
+  const netLuxMax = Math.max(0, input.luxMax - ambient);
+
+  const lumensMin = netLuxMin * areaM2;
+  const lumensMax = netLuxMax * areaM2;
 
   return {
     areaM2,

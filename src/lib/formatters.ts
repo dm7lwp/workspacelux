@@ -5,7 +5,19 @@ export function formatNumber(value: number, decimals = 0): string {
   });
 }
 
-export function formatArea(value: number): string {
+export function formatArea(value: number, unit: 'meters' | 'feet' | 'cm' | 'inches' | 'sqm' | 'sqft' = 'meters'): string {
+  if (unit === 'feet' || unit === 'sqft') {
+    const sqft = value * 10.76391;
+    return `${formatNumber(sqft, 1)} sq ft`;
+  }
+  if (unit === 'inches') {
+    const sqin = value * 1550.0031;
+    return `${formatNumber(sqin, 0)} sq in`;
+  }
+  if (unit === 'cm') {
+    const sqcm = value * 10000;
+    return `${formatNumber(sqcm, 0)} cm²`;
+  }
   return `${formatNumber(value, 1)} m²`;
 }
 
